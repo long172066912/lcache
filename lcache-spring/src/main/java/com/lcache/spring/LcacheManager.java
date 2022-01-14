@@ -29,6 +29,6 @@ public class LcacheManager extends AbstractCacheManager {
 
     @Override
     protected Collection<? extends LcacheRedissonCache> loadCaches() {
-        return this.caches.values();
+        return caches.values();
     }
 }

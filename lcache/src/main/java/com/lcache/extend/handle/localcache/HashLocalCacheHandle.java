@@ -47,7 +47,7 @@ public class HashLocalCacheHandle extends AbstractLocalCacheHandle {
                     }
                     return list;
                 case "hmgetToMap":
-                    Map<String, Object> map = new HashMap<>();
+                    Map<String, Object> map = new HashMap<>(8);
                     Object o = null;
                     for (int i = 0; i < fields.length; i++) {
                         o = e.getData().get(fields[i]);
@@ -57,7 +57,7 @@ public class HashLocalCacheHandle extends AbstractLocalCacheHandle {
                     }
                     return map;
                 case "hmgetToMapCanNull":
-                    Map<String, Object> map1 = new HashMap<>();
+                    Map<String, Object> map1 = new HashMap<>(8);
                     for (int i = 0; i < fields.length; i++) {
                         map1.put(fields[i].toString(), e.getData().get(fields[i]));
                     }
