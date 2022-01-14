@@ -1,0 +1,3 @@
+rootProject.name = 'lcache'
+include 'lcache'
+include 'lcache-spring'
