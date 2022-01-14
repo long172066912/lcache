@@ -16,7 +16,7 @@ public class CacheExceptionFactory {
     /**
      * 日志前缀
      */
-    private static final String MESSAGE_PREFIX = "Cache2: ";
+    private static final String MESSAGE_PREFIX = "Lcache: ";
 
     /**
      * 抛出异常

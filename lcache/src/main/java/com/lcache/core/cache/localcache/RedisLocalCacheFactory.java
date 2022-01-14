@@ -82,7 +82,7 @@ public class RedisLocalCacheFactory {
     /**
      * 本地缓存key发布订阅channel
      */
-    public static final String LOCAL_CACHE_KEY_PUBSUB_CHANNEL = "cache2:local:channel:";
+    public static final String LOCAL_CACHE_KEY_PUBSUB_CHANNEL = "Lcache:local:channel:";
 
     /**
      * 获取本地缓存执行器

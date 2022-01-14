@@ -47,7 +47,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
     /**
      * 锁前缀
      */
-    private static final String LOCK_PRE = "cache2:lock:";
+    private static final String LOCK_PRE = "lcache:lock:";
 
     /**
      * 获取客户端类型
@@ -233,7 +233,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
     @Override
     public Object getCacheData(CacheDataBuilder cacheDataBuilder) {
         if (null == cacheDataBuilder || StringUtils.isBlank(cacheDataBuilder.getLockKey()) || null == cacheDataBuilder.getCacheGetFunction() || null == cacheDataBuilder.getDbGetFunction() || null == cacheDataBuilder.getCacheSetFunction()) {
-            CacheExceptionFactory.throwException("cache2 getCacheData params error !");
+            CacheExceptionFactory.throwException("Lcache getCacheData params error !");
             return null;
         }
         Object data = null;

@@ -29,7 +29,7 @@ public class StressTest {
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 100, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10000), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
-            return new Thread(r, "cache2压测线程" + (threadNum ++));
+            return new Thread(r, "Lcache 压测线程" + (threadNum ++));
         }
     });
 
@@ -52,7 +52,7 @@ public class StressTest {
     }
 
     public static void test() {
-        LOGGER.info("Cache2Test lettuce begin !");
+        LOGGER.info("Lcache Test lettuce begin !");
         baseCacheExecutor.set("test","123",86400);
         baseCacheExecutor.hset("hset","a","b",60);
         threadPoolExecutor.execute(() -> {
@@ -64,10 +64,10 @@ public class StressTest {
                 }
                 time.addAndGet(1);
                 if (time.get() <= 300) {
-                    LOGGER.info("Cache2Test:" + num);
-                    System.out.println("Cache2Test:" + num);
+                    LOGGER.info("LcacheTest:" + num);
+                    System.out.println("LcacheTest:" + num);
                 } else {
-                    LOGGER.info("Cache2Test失败次数：" + errNum);
+                    LOGGER.info("LcacheTest失败次数：" + errNum);
                     break;
                 }
                 num.set(0);
@@ -104,6 +104,6 @@ public class StressTest {
                 }
             }
         }
-        LOGGER.info("Cache2Test end !");
+        LOGGER.info("LcacheTest end !");
     }
 }

@@ -24,7 +24,7 @@ public class HotKeyTest {
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 100, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10000), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
-            return new Thread(r, "cache2压测线程" + (threadNum ++));
+            return new Thread(r, "Lcache压测线程" + (threadNum ++));
         }
     });
 
@@ -37,7 +37,7 @@ public class HotKeyTest {
         BaseCacheExecutor baseCacheExecutor = CacheClientFactory.getCacheExecutor("friend",new LettuceConnectSourceConfig())
                 .openLocalCache()
                 .setMonitorHotKeyStatisticCapacity(100);
-        LOGGER.info("Cache2Test hotKey test begin !");
+        LOGGER.info("Lcache Test hotKey test begin !");
         threadPoolExecutor.execute(() -> {
             while (true) {
                 try {
@@ -47,10 +47,10 @@ public class HotKeyTest {
                 }
                 time.addAndGet(1);
                 if (time.get() <= 300) {
-                    LOGGER.info("Cache2Test:" + num);
-                    System.out.println("Cache2Test:" + num);
+                    LOGGER.info("Lcache Test:" + num);
+                    System.out.println("Lcache Test:" + num);
                 } else {
-                    LOGGER.info("Cache2Test失败次数：" + errNum);
+                    LOGGER.info("Lcache Test失败次数：" + errNum);
                     break;
                 }
                 num.set(0);
@@ -98,6 +98,6 @@ public class HotKeyTest {
                 }
             }
         }
-        LOGGER.info("Cache2Test end !");
+        LOGGER.info("Lcache Test end !");
     }
 }
