@@ -22,17 +22,6 @@ import javax.annotation.PostConstruct;
 @Component
 public class DbCacheConfigManagerImpl extends DbCacheConfigManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbCacheConfigManager.class);
-
-    static {
-        CacheConfigFactory.register(CacheConfigSourceTypeEnum.DB, new DbCacheConfigManagerImpl());
-    }
-
-    @PostConstruct
-    public void init(){
-        CacheConfigFactory.register(getConfigType(), this);
-    }
-
     @Override
     protected BaseCacheConfig getConfig(CacheConfigModel cacheConfigModel) {
         return new LettuceConnectSourceConfig();

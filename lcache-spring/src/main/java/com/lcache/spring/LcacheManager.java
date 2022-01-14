@@ -2,6 +2,7 @@ package com.lcache.spring;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.AbstractCacheManager;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description: 自定义缓存管理类
  * @date 2021/12/8 4:38 下午
  */
+@Component
 public class LcacheManager extends AbstractCacheManager {
 
     private static Map<String, LcacheRedissonCache> caches = new ConcurrentHashMap<>(4);
@@ -28,7 +30,7 @@ public class LcacheManager extends AbstractCacheManager {
     }
 
     @Override
-    protected Collection<? extends LcacheRedissonCache> loadCaches() {
+    public Collection<? extends LcacheRedissonCache> loadCaches() {
         return caches.values();
     }
 }

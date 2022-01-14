@@ -102,23 +102,42 @@ public class CacheExecutorFactory {
         if (cacheConfigModel.getConnectTypeEnum() == ConnectTypeEnum.SIMPLE && cacheConfigModel.getClientType() == RedisClientConstants.JEDIS) {
             CacheExceptionFactory.throwException("禁止通过Jedis普通方式连接，非线程安全！");
         }
-
-        //保持单例
-        String key = getKey(cacheConfigModel);
-
-
         if (null == redisSourceConfig) {
-            CacheExceptionFactory.throwException("CacheExecutorFactory->getCacheExecutor fail ! redisSourceConfig is null ! cacheConfigModel:", cacheConfigModel.toString());
+            CacheExceptionFactory.addWarnLog("CacheExecutorFactory->getCacheExecutor fail ! redisSourceConfig is null ! cacheConfigModel:{}", cacheConfigModel.toString());
+            return null;
         }
+        return connect(redisSourceConfig, cacheConfigModel);
+    }
 
-        BaseCacheExecutor baseCacheExecutor = getCacheExecutorByClientType(cacheConfigModel);
+    /**
+     * 连接
+     *
+     * @param redisSourceConfig
+     * @param cacheConfigModel
+     */
+    public static BaseCacheExecutor connect(BaseCacheConfig redisSourceConfig, CacheConfigModel cacheConfigModel) {
+        return executorMap.computeIfAbsent(getKey(cacheConfigModel), e -> {
+            //去连接
+            BaseCacheExecutor baseCacheExecutor = getCacheExecutorByClientType(cacheConfigModel);
+            baseCacheExecutor.setCacheConfigModel(cacheConfigModel);
+            baseCacheExecutor.setRedisSourceConfig(redisSourceConfig);
+            return connect(baseCacheExecutor);
+        });
+    }
 
-        baseCacheExecutor.setCacheConfigModel(cacheConfigModel);
-        baseCacheExecutor.setRedisSourceConfig(redisSourceConfig);
-        baseCacheExecutor.setConnectionResource(RedisConnectionManager.getConnectionResource(cacheConfigModel, redisSourceConfig));
+    /**
+     * 去连接
+     *
+     * @param executor
+     */
+    public static BaseCacheExecutor connect(BaseCacheExecutor executor) {
+        if (null == executor) {
+            CacheExceptionFactory.throwException("connect fail BaseCacheExecutor is null ！");
+        }
+        executor.setConnectionResource(RedisConnectionManager.getConnectionResource(executor.getCacheConfigModel(), executor.getRedisSourceConfig()));
         //实例初始化后必须的操作
-        after(redisSourceConfig, cacheConfigModel, baseCacheExecutor);
-        return baseCacheExecutor;
+        after(executor.getRedisSourceConfig(), executor.getCacheConfigModel(), executor);
+        return executor;
     }
 
     private static String getKey(CacheConfigModel cacheConfigModel) {
@@ -126,14 +145,12 @@ public class CacheExecutorFactory {
     }
 
     private static BaseCacheExecutor getCacheExecutorByClientType(CacheConfigModel cacheConfigModel) {
-        return executorMap.computeIfAbsent(getKey(cacheConfigModel), e -> {
-            try {
-                return clientTypeSupports.get(cacheConfigModel.getClientType()).newInstance();
-            } catch (Exception ex) {
-                CacheExceptionFactory.throwException("获取连接资源失败！", ex);
-                return null;
-            }
-        });
+        try {
+            return clientTypeSupports.get(cacheConfigModel.getClientType()).newInstance();
+        } catch (Exception ex) {
+            CacheExceptionFactory.throwException("获取连接资源失败！", ex);
+            return null;
+        }
     }
 
 
