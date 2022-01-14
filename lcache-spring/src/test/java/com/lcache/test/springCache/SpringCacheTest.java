@@ -12,6 +12,7 @@ import com.lcache.test.springCache.service.model.SpringCacheTestReq;
 import com.lcache.test.springCache.service.model.SpringCacheTestRes;
 import lombok.Data;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +28,7 @@ public class SpringCacheTest extends CacheBaseTest {
     private BaseCacheExecutor cacheExecutor;
     private LcacheRedissonCache lcache;
 
-    @PostConstruct
+    @Before
     public void init(){
         this.lcache = new LcacheRedissonCache(SPRING_CACHE_TYPE, cacheExecutor);
     }
