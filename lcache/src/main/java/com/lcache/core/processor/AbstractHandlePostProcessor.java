@@ -45,6 +45,11 @@ public abstract class AbstractHandlePostProcessor implements InterfaceHandlePost
      */
     public abstract int getClientType();
 
+    /**
+     * 如果指定了命令，则使用限定命令
+     *
+     * @return
+     */
     @Override
     public Set<String> specifiedCommands() {
         return null;

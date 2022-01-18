@@ -16,10 +16,7 @@ public enum HandlePostProcessorTypeEnum {
      * 命令
      */
     HANDLE(2),
-    /**
-     * 业务逻辑
-     */
-    BUSINESS(3);
+    ;
 
     HandlePostProcessorTypeEnum(int type) {
         this.type = type;
