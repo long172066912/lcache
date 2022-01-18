@@ -3,7 +3,9 @@ package com.lcache.core.processor;
 
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
 import com.lcache.core.model.CacheHandleProcessorModel;
+import com.lcache.core.processor.factory.HandlePostFactory;
 
+import javax.annotation.PostConstruct;
 import java.util.Set;
 
 /**
@@ -51,7 +53,10 @@ public abstract class AbstractHandlePostProcessor implements InterfaceHandlePost
     /**
      * 注册实现类到工厂
      */
-    public abstract void registerIntoPostFactory();
+    @PostConstruct
+    public void registerIntoPostFactory(){
+        HandlePostFactory.addBeanPostProcessor(this);
+    }
 
     @Override
     public void handleBefore(CacheHandleProcessorModel cacheHandleProcessorModel) {

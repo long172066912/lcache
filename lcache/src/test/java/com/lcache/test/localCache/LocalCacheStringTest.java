@@ -185,7 +185,7 @@ public class LocalCacheStringTest {
     }
 
     /**
-     * 多级缓存-字符串-jedis不开启，lettuce开启
+     * 多级缓存-字符串
      */
     public void get(String key, CacheFunction setFunction) {
         //查询
@@ -211,7 +211,7 @@ public class LocalCacheStringTest {
     }
 
     /**
-     * 多级缓存-字符串-jedis不开启，lettuce开启
+     * 多级缓存-字符串
      */
     public void substr(String key, CacheFunction setFunction) {
         //查询
@@ -242,7 +242,7 @@ public class LocalCacheStringTest {
     }
 
     /**
-     * 多级缓存-字符串-jedis不开启，lettuce开启
+     * 多级缓存-字符串
      */
     public void strlen(String key, CacheFunction setFunction) {
         //查询

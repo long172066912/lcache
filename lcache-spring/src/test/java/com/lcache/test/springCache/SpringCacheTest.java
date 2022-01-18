@@ -26,6 +26,7 @@ public class SpringCacheTest extends CacheBaseTest {
 
     @Lcache(cacheType = SPRING_CACHE_TYPE)
     private BaseCacheExecutor cacheExecutor;
+
     private LcacheRedissonCache lcache;
 
     @Before
@@ -39,6 +40,13 @@ public class SpringCacheTest extends CacheBaseTest {
     private SpringCachePutTestService putTestService;
     @Autowired
     private SpringCacheEvictTestService evictTestService;
+
+    @Test
+    public void testPostProcessor() {
+        cacheExecutor.del("test");
+        cacheExecutor.set("test","test",60);
+        assertEquals("test", cacheExecutor.get("test"));
+    }
 
     @Test
     public void test() {
@@ -57,14 +65,17 @@ public class SpringCacheTest extends CacheBaseTest {
         SpringCacheTestReq req1 = SpringCacheTestReq.builder().a("getTest1").b(1).build();
         String value = service.getStringValue(req1);
         assertEquals(value, lcache.get("stringValue").get());
+        assertEquals(value, cacheExecutor.getByRedissonMap("stringValue"));
         assertEquals(value, service.getStringValue(SpringCacheTestReq.builder().a("getTest2").b(2).build()));
         //map
         Map<String, Object> mapValue = service.getMapValue(req1);
         assertEquals(mapValue, lcache.get("mapValue").get());
+        assertEquals(mapValue, cacheExecutor.getByRedissonMap("mapValue"));
         assertEquals(mapValue, service.getMapValue(SpringCacheTestReq.builder().a("getTest3").b(2).build()));
         //object
         SpringCacheTestRes objectValue = service.getObjectValue(req1);
         assertEquals(objectValue, lcache.get("objectValue").get());
+        assertEquals(objectValue, cacheExecutor.getByRedissonMap("objectValue"));
         assertEquals(objectValue, service.getObjectValue(SpringCacheTestReq.builder().a("getTest4").b(2).build()));
     }
 
