@@ -2,10 +2,7 @@ package com.lcache.spring;
 
 import org.springframework.core.annotation.AliasFor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * @author JerryLong
@@ -16,13 +13,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Lcache {
-    /**
-     * cacheType
-     * @return
-     */
-    @AliasFor("cacheType")
-    String value() default "";
 
     /**
      * 通过cacheType区分连接实例
