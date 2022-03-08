@@ -1800,7 +1800,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
     }
 
     @Override
-    public Object eval(String script, int keyCount, String[] params) {
+    public Object eval(String script, ScriptOutputType outputType, int keyCount, String[] params) {
         String[] keys = new String[params.length > 1 ? params.length >> 1 : params.length];
         String[] values = new String[params.length >> 1];
         for (int i = 0; i < params.length; i++) {
@@ -1812,40 +1812,40 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
             }
         }
         return this.execute(() -> {
-            return this.sync().eval(script, ScriptOutputType.VALUE, keys, values);
+            return this.sync().eval(script, outputType, keys, values);
         }, "");
     }
 
     @Override
-    public Object eval(String script, List<String> keys, List<String> args) {
+    public Object eval(String script, ScriptOutputType outputType, List<String> keys, List<String> args) {
         return this.execute(() -> {
-            return this.sync().eval(script, ScriptOutputType.VALUE, keys.toArray(new String[keys.size()]), args.toArray());
+            return this.sync().eval(script, outputType, keys.toArray(new String[keys.size()]), args.toArray());
         }, "");
     }
 
     @Override
-    public Object eval(String script) {
+    public Object eval(String script, ScriptOutputType outputType) {
         return this.execute(() -> {
-            return this.sync().eval(script, ScriptOutputType.VALUE);
+            return this.sync().eval(script, outputType);
         }, "");
     }
 
     @Override
-    public Object evalsha(String sha1) {
+    public Object evalsha(String sha1, ScriptOutputType outputType) {
         return this.execute(() -> {
-            return this.sync().evalsha(sha1, ScriptOutputType.INTEGER);
+            return this.sync().evalsha(sha1, outputType);
         }, "");
     }
 
     @Override
-    public Object evalsha(String sha1, List<String> keys, List<String> args) {
+    public Object evalsha(String sha1, ScriptOutputType outputType, List<String> keys, List<String> args) {
         return this.execute(() -> {
-            return this.sync().evalsha(sha1, ScriptOutputType.INTEGER, keys.toArray(new String[keys.size()]), args.toArray());
+            return this.sync().evalsha(sha1, outputType, keys.toArray(new String[keys.size()]), args.toArray());
         }, "");
     }
 
     @Override
-    public Object evalsha(String sha1, int keyCount, String[] params) {
+    public Object evalsha(String sha1, ScriptOutputType outputType, int keyCount, String[] params) {
         String[] keys = new String[params.length > 1 ? params.length >> 1 : params.length];
         String[] values = new String[params.length >> 1];
         for (int i = 0; i < params.length; i++) {
@@ -1857,7 +1857,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
             }
         }
         return this.execute(() -> {
-            return this.sync().evalsha(sha1, ScriptOutputType.INTEGER, keys, values);
+            return this.sync().evalsha(sha1, outputType, keys, values);
         }, "");
     }
 

@@ -5,10 +5,7 @@ import com.lcache.core.cache.annotations.CommandsDataType;
 import com.lcache.core.constant.CommandsDataTypeEnum;
 import com.lcache.core.constant.LocalCacheHandleTypeEnum;
 import com.lcache.core.model.InterfacePubSubModel;
-import io.lettuce.core.BitFieldArgs;
-import io.lettuce.core.KeyValue;
-import io.lettuce.core.ScoredValue;
-import io.lettuce.core.SortArgs;
+import io.lettuce.core.*;
 import redis.clients.jedis.*;
 import redis.clients.jedis.params.geo.GeoRadiusParam;
 import redis.clients.jedis.params.sortedset.ZAddParams;
@@ -1691,7 +1688,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "eval", dataType = CommandsDataTypeEnum.EVAL)
-    Object eval(String script, int keyCount, String[] params);
+    Object eval(String script, ScriptOutputType outputType, int keyCount, String[] params);
 
     /**
      * EVAL script numkeys key [key ...] arg [arg ...]
@@ -1703,7 +1700,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "eval", dataType = CommandsDataTypeEnum.EVAL)
-    Object eval(String script, List<String> keys, List<String> args);
+    Object eval(String script, ScriptOutputType outputType, List<String> keys, List<String> args);
 
     /**
      * EVAL script numkeys key [key ...] arg [arg ...]
@@ -1713,7 +1710,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "eval", dataType = CommandsDataTypeEnum.EVAL)
-    Object eval(String script);
+    Object eval(String script, ScriptOutputType outputType);
 
     /**
      * EVALSHA sha1 numkeys key [key ...] arg [arg ...]
@@ -1723,7 +1720,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "evalsha", dataType = CommandsDataTypeEnum.EVAL)
-    Object evalsha(String sha1);
+    Object evalsha(String sha1, ScriptOutputType outputType);
 
     /**
      * EVALSHA sha1 numkeys key [key ...] arg [arg ...]
@@ -1735,7 +1732,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "evalsha", dataType = CommandsDataTypeEnum.EVAL)
-    Object evalsha(String sha1, List<String> keys, List<String> args);
+    Object evalsha(String sha1, ScriptOutputType outputType, List<String> keys, List<String> args);
 
     /**
      * EVALSHA sha1 numkeys key [key ...] arg [arg ...]
@@ -1747,7 +1744,7 @@ public interface RedisCommands extends LcacheCommands {
      * @return
      */
     @CommandsDataType(commands = "evalsha", dataType = CommandsDataTypeEnum.EVAL)
-    Object evalsha(String sha1, int keyCount, String[] params);
+    Object evalsha(String sha1, ScriptOutputType outputType, int keyCount, String[] params);
 
     /**
      * 命令用于校验指定的脚本是否已经被保存在缓存当中

@@ -8,10 +8,7 @@ import com.lcache.core.model.InterfacePubSubModel;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.jedis.AbstractJedisHandleExecutor;
 import com.lcache.util.CacheCommonUtils;
-import io.lettuce.core.BitFieldArgs;
-import io.lettuce.core.KeyValue;
-import io.lettuce.core.ScoredValue;
-import io.lettuce.core.SortArgs;
+import io.lettuce.core.*;
 import org.apache.commons.collections4.CollectionUtils;
 import redis.clients.jedis.*;
 import redis.clients.jedis.params.geo.GeoRadiusParam;
@@ -626,7 +623,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     @Override
     public Long zaddIfKeyExists(String key, double score, String member, int seconds) {
         try {
-            return Long.parseLong(this.evalsha(this.getLuaSha1(RedisLuaScripts.ZADD_IF_EXISTS), Arrays.asList(key), Arrays.asList(score + "", member)).toString());
+            return Long.parseLong(this.evalsha(this.getLuaSha1(RedisLuaScripts.ZADD_IF_EXISTS), ScriptOutputType.INTEGER, Arrays.asList(key), Arrays.asList(score + "", member)).toString());
         } finally {
             if (seconds > 0) {
                 CompletableFuture.runAsync(() -> this.expire(key, seconds));
@@ -731,7 +728,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
 
     @Override
     public Map<String, Double> zscoreBatch(String key, List<String> members) {
-        return JSON.parseObject(this.execute(() -> this.evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), Arrays.asList(key), members), key).toString(), Map.class);
+        return JSON.parseObject(this.execute(() -> this.evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), ScriptOutputType.VALUE, Arrays.asList(key), members), key).toString(), Map.class);
     }
 
     @Override
@@ -1699,7 +1696,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object eval(String script, int keyCount, String[] params) {
+    public Object eval(String script, ScriptOutputType outputType, int keyCount, String[] params) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->eval(String script, int keyCount, String... params) 暂不支持此命令");
@@ -1716,7 +1713,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object eval(String script, List<String> keys, List<String> args) {
+    public Object eval(String script, ScriptOutputType outputType, List<String> keys, List<String> args) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->eval(String script, List<String> keys, List<String> args) 暂不支持此命令");
@@ -1733,7 +1730,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object eval(String script) {
+    public Object eval(String script, ScriptOutputType outputType) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->eval(String script) 暂不支持此命令");
@@ -1749,7 +1746,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object evalsha(String sha1) {
+    public Object evalsha(String sha1, ScriptOutputType outputType) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->evalsha(String sha1) 暂不支持此命令");
@@ -1765,7 +1762,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object evalsha(String sha1, List<String> keys, List<String> args) {
+    public Object evalsha(String sha1, ScriptOutputType outputType, List<String> keys, List<String> args) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->evalsha(String sha1, List<String> keys, List<String> args) 暂不支持此命令");
@@ -1782,7 +1779,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
-    public Object evalsha(String sha1, int keyCount, String[] params) {
+    public Object evalsha(String sha1, ScriptOutputType outputType, int keyCount, String[] params) {
         switch (this.getCacheConfigModel().getConnectTypeEnum()) {
             case SHARDED:
                 CacheExceptionFactory.throwException("ShardedJedis->evalsha(String sha1, int keyCount, String... params) 暂不支持此命令");

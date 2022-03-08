@@ -16,6 +16,7 @@ import com.lcache.exception.CacheException;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.util.BeanFactory;
 import com.lcache.util.CacheFunction;
+import io.lettuce.core.ScriptOutputType;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RMapCache;
@@ -285,8 +286,8 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
     }
 
     @Override
-    public Object executeByLua(RedisLuaInterface lua, List<String> keys, List<String> args) {
-        return this.evalsha(getLuaSha1(lua), Optional.ofNullable(keys).orElse(new ArrayList<>()), Optional.ofNullable(args).orElse(new ArrayList<>()));
+    public Object executeByLua(RedisLuaInterface lua, ScriptOutputType outputType, List<String> keys, List<String> args) {
+        return this.evalsha(getLuaSha1(lua), outputType, Optional.ofNullable(keys).orElse(new ArrayList<>()), Optional.ofNullable(args).orElse(new ArrayList<>()));
     }
 
     protected Map<RedisLuaInterface, String> getLuaLoadsInfo() {

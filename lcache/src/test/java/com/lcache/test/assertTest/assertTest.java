@@ -12,6 +12,7 @@ import com.lcache.core.model.CacheDataBuilder;
 import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
 import io.lettuce.core.BitFieldArgs;
+import io.lettuce.core.ScriptOutputType;
 import io.lettuce.core.SortArgs;
 import org.junit.Test;
 import redis.clients.jedis.*;
@@ -521,14 +522,14 @@ public class assertTest {
     public void eval() {
         lettuce.mset(seconds, "test1", "a", "test2", "b");
         String str1 = "return redis.call('set',KEYS[1],'aa')";//设置键k1的值为aa
-        assertEquals(jedis.eval(str1, 1, new String[]{"test1"}), lettuce.eval(str1, 1, new String[]{"test1"}));
+        assertEquals(jedis.eval(str1, ScriptOutputType.VALUE, 1, new String[]{"test1"}), lettuce.eval(str1, ScriptOutputType.VALUE, 1, new String[]{"test1"}));
         List<String> keys = new ArrayList<>();
         List<String> args = new ArrayList<>();
         keys.add("test1");
         args.add("aa");
-        assertEquals(jedis.eval(str1, keys, args), lettuce.eval(str1, keys, args));
-        assertEquals(jedis.evalsha(jedis.scriptLoad(LockConstant.RELEASE_LOCK_SCRIPT), 1, new String[]{"test1", "aa"}), lettuce.evalsha(jedis.scriptLoad(LockConstant.RELEASE_LOCK_SCRIPT), 1, new String[]{"test2", "b"}));
-        assertEquals(jedis.eval("return redis.call('get','test1')"), lettuce.eval("return redis.call('get','test1')"));
+        assertEquals(jedis.eval(str1, ScriptOutputType.VALUE, keys, args), lettuce.eval(str1, ScriptOutputType.VALUE, keys, args));
+        assertEquals(jedis.evalsha(jedis.scriptLoad(LockConstant.RELEASE_LOCK_SCRIPT), ScriptOutputType.INTEGER, 1, new String[]{"test1", "aa"}), lettuce.evalsha(jedis.scriptLoad(LockConstant.RELEASE_LOCK_SCRIPT), ScriptOutputType.INTEGER, 1, new String[]{"test2", "b"}));
+        assertEquals(jedis.eval("return redis.call('get','test1')", ScriptOutputType.VALUE), lettuce.eval("return redis.call('get','test1')", ScriptOutputType.VALUE));
 //        Object evalsha(String sha1, List<String> keys, List<String> args);
 //        Object evalsha(String sha1, int keyCount, String... params);
         lettuce.del("test1");
@@ -561,8 +562,8 @@ public class assertTest {
         jedis.set("test2", "test2", 60);
         lettuce.set("test3", "test3", 60);
         lettuce.set("test4", "test4", 60);
-        assertEquals(jedis.executeByLua(TestLua.TEST_UN_LOCK, Arrays.asList("test1"), Arrays.asList("test1")), lettuce.executeByLua(TestLua.TEST_UN_LOCK, Arrays.asList("test3"), Arrays.asList("test3")));
-        assertEquals(jedis.executeByLua(TestLua.TEST_UN_LOCK, Arrays.asList("test2"), Arrays.asList("test2")), lettuce.executeByLua(TestLua.TEST_UN_LOCK, Arrays.asList("test4"), Arrays.asList("test4")));
+        assertEquals(jedis.executeByLua(TestLua.TEST_UN_LOCK, ScriptOutputType.INTEGER, Arrays.asList("test1"), Arrays.asList("test1")), lettuce.executeByLua(TestLua.TEST_UN_LOCK, ScriptOutputType.INTEGER, Arrays.asList("test3"), Arrays.asList("test3")));
+        assertEquals(jedis.executeByLua(TestLua.TEST_UN_LOCK, ScriptOutputType.INTEGER, Arrays.asList("test2"), Arrays.asList("test2")), lettuce.executeByLua(TestLua.TEST_UN_LOCK, ScriptOutputType.INTEGER, Arrays.asList("test4"), Arrays.asList("test4")));
         assertNull(jedis.get("test1"));
         assertNull(jedis.get("test2"));
         assertNull(lettuce.get("test3"));

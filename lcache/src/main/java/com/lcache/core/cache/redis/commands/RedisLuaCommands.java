@@ -4,6 +4,7 @@ import com.lcache.core.cache.LcacheCommands;
 import com.lcache.core.cache.annotations.CommandsDataType;
 import com.lcache.core.cache.redis.lua.RedisLuaInterface;
 import com.lcache.core.constant.CommandsDataTypeEnum;
+import io.lettuce.core.ScriptOutputType;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public interface RedisLuaCommands extends LcacheCommands {
      * @param args
      * @return
      */
-    Object executeByLua(RedisLuaInterface lua, List<String> keys, List<String> args);
+    Object executeByLua(RedisLuaInterface lua, ScriptOutputType outputType, List<String> keys, List<String> args);
 
     /**
      * 获取lua脚本缓存的值
