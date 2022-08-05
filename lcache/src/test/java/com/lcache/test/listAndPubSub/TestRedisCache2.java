@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.lcache.client.CacheClientFactory;
 import com.lcache.core.BaseCacheExecutor;
 import com.lcache.core.cache.localcache.LcacheCaffeineLocalCache;
+import com.lcache.core.cache.redis.model.LLock;
 import com.lcache.core.model.CacheConfigModel;
 import com.lcache.extend.handle.pipeline.PipelineCmd;
 import com.lcache.extend.handle.pipeline.PipelineGet;
@@ -13,7 +14,6 @@ import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
 import io.lettuce.core.api.StatefulConnection;
 import org.junit.Test;
-import org.redisson.api.RLock;
 import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
@@ -105,12 +105,12 @@ public class TestRedisCache2 {
 
     @Test
     public void testLock() {
-        BaseCacheExecutor baseCacheExecutor = CacheClientFactory.getCacheExecutor(CacheConfigModel.lettuce("club"));
+        BaseCacheExecutor baseCacheExecutor = CacheClientFactory.getCacheExecutor("test", new LettuceConnectSourceConfig());
         //多线程测试
         Thread a = new Thread(() -> {
             while (true) {
                 int i = 1;
-                RLock lock = baseCacheExecutor.lock("lock" + i, 1, TimeUnit.SECONDS);
+                LLock lock = baseCacheExecutor.lock("lock" + i, 1, TimeUnit.SECONDS);
                 try {
                     if (null != lock) {
                         System.out.println(i + "a加锁成功");
@@ -119,7 +119,7 @@ public class TestRedisCache2 {
                     System.out.println("a 执行完毕" + i);
                 } catch (Exception e) {
                 } finally {
-                    baseCacheExecutor.unLock(lock);
+                    lock.unlock();
                     System.out.println(i + "a解锁成功");
                 }
             }
@@ -129,7 +129,7 @@ public class TestRedisCache2 {
         Thread b = new Thread(() -> {
             while (true) {
                 int i = 1;
-                RLock lock = baseCacheExecutor.lock("lock" + i, 10, TimeUnit.SECONDS);
+                LLock lock = baseCacheExecutor.lock("lock" + i, 10, TimeUnit.SECONDS);
                 try {
                     if (null != lock) {
                         System.out.println(i + "b加锁成功");
@@ -138,7 +138,7 @@ public class TestRedisCache2 {
                     System.out.println("b 执行完毕" + i);
                 } catch (Exception e) {
                 } finally {
-                    baseCacheExecutor.unLock(lock);
+                    lock.unlock();
                     System.out.println(i + "b解锁成功");
                 }
             }
@@ -339,12 +339,12 @@ public class TestRedisCache2 {
     @Test
     public void testExpireBatch() {
         BaseCacheExecutor baseCacheExecutor = CacheClientFactory.getCacheExecutor("test", new LettuceConnectSourceConfig());
-        baseCacheExecutor.set("a","a",60);
-        baseCacheExecutor.set("b","b",60);
+        baseCacheExecutor.set("a", "a", 60);
+        baseCacheExecutor.set("b", "b", 60);
         try {
             String s = baseCacheExecutor.async().expireBatch(30, "a", "b").get();
             System.out.println(s);
-            Map<String,Boolean> res = JSON.parseObject(s,Map.class);
+            Map<String, Boolean> res = JSON.parseObject(s, Map.class);
             System.out.println(res.get("a"));
             System.out.println(baseCacheExecutor.ttl("a"));
             System.out.println(baseCacheExecutor.ttl("b"));
@@ -427,12 +427,12 @@ public class TestRedisCache2 {
         String lockName = "unLockTest";
         for (int i = 0; i < 5; i++) {
             int finalI = i;
-            new Thread(()->{
+            new Thread(() -> {
                 try {
-                    RLock lock = null;
+                    LLock lock = null;
                     try {
-                        lock = baseCacheExecutor.lock(lockName,-1,TimeUnit.SECONDS);
-                        while (true){
+                        lock = baseCacheExecutor.lock(lockName, -1, TimeUnit.SECONDS);
+                        while (true) {
                             System.out.println("持有锁" + finalI);
                             try {
                                 Thread.sleep(5000L);
@@ -443,7 +443,7 @@ public class TestRedisCache2 {
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        baseCacheExecutor.unLock(lock);
+                        lock.unlock();
                         System.out.println("释放锁" + finalI);
                     }
                 } catch (Exception e) {
@@ -451,7 +451,7 @@ public class TestRedisCache2 {
                 }
             }).start();
         }
-        while (true){
+        while (true) {
         }
     }
 
@@ -462,7 +462,7 @@ public class TestRedisCache2 {
         baseCacheExecutor.async().incr("lincr1", 60).thenRun(() -> baseCacheExecutor.asyncL().incr("lincr1"));
         assertEquals(2, Long.parseLong(baseCacheExecutor.get("lincr1")));
         System.out.println("asyncIncr 通过 !");
-        baseCacheExecutor.set("test","aaa",60);
+        baseCacheExecutor.set("test", "aaa", 60);
         baseCacheExecutor.asyncL().getset("test", "bbb").thenRun(() -> baseCacheExecutor.asyncL().getset("test", "ccc").thenRun(() -> assertEquals("ccc", baseCacheExecutor.get("test"))));
         System.out.println("asyncTest 通过 !");
     }

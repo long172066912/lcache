@@ -7,6 +7,7 @@ import com.lcache.core.cache.localcache.AbstractLocalCacheHandle;
 import com.lcache.core.cache.localcache.RedisLocalCacheFactory;
 import com.lcache.core.cache.localcache.LcacheCaffeineLocalCache;
 import com.lcache.core.cache.redis.lua.RedisLuaInterface;
+import com.lcache.core.cache.redis.model.LLock;
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
 import com.lcache.core.converters.PostProcessorConvertersAndExecutor;
 import com.lcache.core.model.CacheDataBuilder;
@@ -172,12 +173,12 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
 
 
     @Override
-    public RLock lock(String name, long leaseTime, TimeUnit unit) {
-        return (RLock) this.execute(() -> {
+    public LLock lock(String name, long leaseTime, TimeUnit unit) {
+        return (LLock) this.execute(() -> {
             try {
                 RLock lock = this.getRedissonClient().getLock(LOCK_PRE + name);
                 lock.lock(leaseTime, unit);
-                return lock;
+                return new LLock(lock, this);
             } catch (Exception e) {
                 CacheExceptionFactory.throwException("JedisRedisCommandsImpl->lock error !", e);
                 return null;
@@ -187,13 +188,13 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
     }
 
     @Override
-    public RLock tryLock(String name, long waitTime, long leaseTime, TimeUnit unit) {
-        return (RLock) this.execute(() -> {
+    public LLock tryLock(String name, long waitTime, long leaseTime, TimeUnit unit) {
+        return (LLock) this.execute(() -> {
             try {
                 RLock lock = this.getRedissonClient().getLock(LOCK_PRE + name);
                 boolean b = lock.tryLock(waitTime, leaseTime, unit);
                 if (b) {
-                    return lock;
+                    return new LLock(lock, this);
                 }
                 return null;
             } catch (InterruptedException e) {
@@ -201,24 +202,6 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
                 return null;
             }
         });
-    }
-
-    @Override
-    public void unLock(RLock lock) {
-        if (null != lock) {
-            this.execute(() -> {
-                try {
-                    if (lock.isLocked() && lock.isHeldByCurrentThread()) {
-                        lock.unlock();
-                    }
-                } catch (Exception e) {
-                    //防止判断时异常导致锁一直不释放
-                    lock.unlock();
-                    CacheExceptionFactory.throwException("JedisRedisCommandsImpl->unLock error !", e);
-                }
-                return null;
-            }, lock.getName());
-        }
     }
 
     @Override
@@ -244,7 +227,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
             if (null != data) {
                 return data;
             }
-            RLock lock = this.tryLock(cacheDataBuilder.getLockKey(), cacheDataBuilder.getWaitTime(), cacheDataBuilder.getLeaseTime(), cacheDataBuilder.getUnit());
+            LLock lock = this.tryLock(cacheDataBuilder.getLockKey(), cacheDataBuilder.getWaitTime(), cacheDataBuilder.getLeaseTime(), cacheDataBuilder.getUnit());
             if (null != lock) {
                 try {
                     //双检测
@@ -260,7 +243,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
                     }
                     return data;
                 } finally {
-                    this.unLock(lock);
+                    lock.unlock();
                 }
             } else {
                 //锁等待失败，最后尝试再从缓存拿一次

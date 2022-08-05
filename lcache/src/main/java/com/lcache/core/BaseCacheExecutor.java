@@ -2,10 +2,7 @@ package com.lcache.core;
 
 import com.lcache.config.BaseCacheConfig;
 import com.lcache.core.cache.localcache.RedisLocalCacheFactory;
-import com.lcache.core.cache.redis.commands.RedisCommands;
-import com.lcache.core.cache.redis.commands.RedisIntegrationCommands;
-import com.lcache.core.cache.redis.commands.RedisLuaCommands;
-import com.lcache.core.cache.redis.commands.RedissonCommands;
+import com.lcache.core.cache.redis.commands.*;
 import com.lcache.core.cache.redis.lua.RedisLuaInterface;
 import com.lcache.core.cache.redis.lua.RedisLuaScripts;
 import com.lcache.core.cache.redis.redisson.RedissonClientManager;
@@ -27,7 +24,7 @@ import java.util.Set;
  * @Description: 缓存命令抽象
  * @date 2021/1/22 2:40 PM
  */
-public abstract class BaseCacheExecutor implements InterfaceCacheExecutor, RedisCommands, RedissonCommands, RedisIntegrationCommands, RedisLuaCommands {
+public abstract class BaseCacheExecutor implements InterfaceCacheExecutor, RedisCommands, RedissonCommands, RedisIntegrationCommands, RedisLuaCommands, RedisLockCommands {
     /**
      * 组件常用信息
      */

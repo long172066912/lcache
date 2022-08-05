@@ -14,14 +14,14 @@ import java.util.List;
  * @date 2021/2/23 3:06 PM
  */
 @FunctionalInterface
-public interface CacheFunction extends Serializable {
+public interface CacheFunction<T> extends Serializable {
 
     /**
      * 这里只接收无参方法
      *
      * @return
      */
-    Object apply();
+    T apply();
 
     /**
      * 这个方法返回的SerializedLambda是重点

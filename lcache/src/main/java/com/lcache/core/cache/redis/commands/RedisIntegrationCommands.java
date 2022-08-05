@@ -20,38 +20,6 @@ import java.util.function.Function;
  */
 public interface RedisIntegrationCommands extends LcacheCommands {
     /**
-     * 加锁，内部通过Redisson实现
-     *
-     * @param name
-     * @param leaseTime 在定义了leaseTime后，锁会自动释放。如果leaseTime为-1，保持锁定直到显式解锁
-     * @param unit
-     * @return
-     */
-    @CommandsDataType(commands = "lock", dataType = CommandsDataTypeEnum.LOCK)
-    RLock lock(String name, long leaseTime, TimeUnit unit);
-
-    /**
-     * 有最大等待时间方式的加锁
-     *
-     * @param name
-     * @param waitTime
-     * @param leaseTime
-     * @param unit
-     * @return
-     */
-    @CommandsDataType(commands = "tryLock", dataType = CommandsDataTypeEnum.LOCK)
-    RLock tryLock(String name, long waitTime, long leaseTime, TimeUnit unit);
-
-    /**
-     * 解锁
-     *
-     * @param lock
-     * @return
-     */
-    @CommandsDataType(commands = "unLock", dataType = CommandsDataTypeEnum.LOCK)
-    void unLock(RLock lock);
-
-    /**
      * 本地缓存，不存在则通过cache.get(key)获取，并存入本地缓存，缓存有效时间60s
      * 注：在使用本方法时，请注意以下几点：
      * 1、如果function中获取的值二次修改，分布式下本地缓存查询结果可能不一致
