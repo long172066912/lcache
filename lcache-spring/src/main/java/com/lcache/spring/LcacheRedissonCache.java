@@ -118,6 +118,6 @@ public class LcacheRedissonCache implements Cache {
     @Override
     public void clear() {
         //不支持
-        CacheExceptionFactory.throwException("玩吧 Spring Cache 不支持清空 !");
+        CacheExceptionFactory.throwException("Lcache Spring Cache 不支持清空 !");
     }
 }

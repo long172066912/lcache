@@ -1,4 +1,4 @@
-package com.lcache.test.springCache;//package com.wb.cache.test.cache2.commands.assertTest;
+package com.lcache.test.springCache;
 
 import com.google.common.collect.ImmutableMap;
 import com.lcache.spring.LcacheSpringLocalCache;
@@ -31,8 +31,8 @@ public class SpringLocalCacheTest extends CacheBaseTest {
 
     @Test
     public void test() {
-        String key = "wbCacheTest";
-        String callAbleKey = "wbCacheCallAbleTestKey";
+        String key = "lCacheTest";
+        String callAbleKey = "lCacheCallAbleTestKey";
         check(key, callAbleKey, "test");
         Map<String, String> map = ImmutableMap.of("a", "b", "c", "d");
         check(key, callAbleKey, map);

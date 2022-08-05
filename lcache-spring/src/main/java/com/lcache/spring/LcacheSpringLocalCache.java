@@ -38,7 +38,7 @@ public class LcacheSpringLocalCache implements Cache {
 
     @Override
     public String getName() {
-        return "WbSpringLocalCache";
+        return "LSpringLocalCache";
     }
 
     @Override

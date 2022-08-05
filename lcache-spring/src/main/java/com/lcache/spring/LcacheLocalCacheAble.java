@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 public @interface LcacheLocalCacheAble {
     /**
      * cacheType
-     * 默认不传，通过 WbCacheManager.WB_SPRING_LOCAL_CACHE 调用 WbSpringLocalCache 中的 Caffeine
+     * 默认不传，通过 lCacheManager.L_SPRING_LOCAL_CACHE 调用 LSpringLocalCache 中的 Caffeine
      * 有效期5分钟
      * 修改 LcacheLocalCachePut / 删除 LcacheLocalCacheEvict
      * @return
