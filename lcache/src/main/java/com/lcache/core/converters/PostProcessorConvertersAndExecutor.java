@@ -44,7 +44,7 @@ public class PostProcessorConvertersAndExecutor {
      * @param cacheHandleProcessorModel
      * @return
      */
-    public Object executeHandles(List<AbstractHandlePostProcessor> handleLinkList, CacheHandleProcessorModel cacheHandleProcessorModel) {
+    public <T> T executeHandles(List<AbstractHandlePostProcessor> handleLinkList, CacheHandleProcessorModel<T> cacheHandleProcessorModel) {
         if (CollectionUtils.isNotEmpty(handleLinkList)) {
             cacheHandleProcessorModel = this.executeByHandleLinkList(handleLinkList, cacheHandleProcessorModel);
         } else {

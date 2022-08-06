@@ -20,12 +20,12 @@ public class DefaultLocalCacheHandle extends AbstractLocalCacheHandle {
     }
 
     @Override
-    public Object get(BaseCacheExecutor executor, CacheFunction function, String key, Object[] fields) {
+    public <T> T get(BaseCacheExecutor executor, CacheFunction<T> function, String key, Object[] fields) {
         return function.apply();
     }
 
     @Override
-    public Object set(BaseCacheExecutor executor, CacheFunction function, String key) {
+    public <T> T set(BaseCacheExecutor executor, CacheFunction<T> function, String key) {
         return function.apply();
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
  * @Description: 执行器模板
  * @date 2021/2/23 3:41 PM
  */
-public class CacheHandleProcessorModel {
+public class CacheHandleProcessorModel<T> {
     /**
      * 连接使用
      *
      * @param function
      */
-    public CacheHandleProcessorModel(CacheFunction function) {
+    public CacheHandleProcessorModel(CacheFunction<T> function) {
         this.function = function;
         this.isLocalCache = false;
     }
@@ -33,7 +33,7 @@ public class CacheHandleProcessorModel {
      * @param cacheConfigModel
      * @param key
      */
-    public CacheHandleProcessorModel(CacheFunction function, String commands, CacheConfigModel cacheConfigModel, String key) {
+    public CacheHandleProcessorModel(CacheFunction<T> function, String commands, CacheConfigModel cacheConfigModel, String key) {
         this.function = function;
         this.cacheConfigModel = cacheConfigModel;
         this.commands = commands;
@@ -49,7 +49,7 @@ public class CacheHandleProcessorModel {
      * @param cacheConfigModel
      * @param keys
      */
-    public CacheHandleProcessorModel(CacheFunction function, String commands, CacheConfigModel cacheConfigModel, String[] keys) {
+    public CacheHandleProcessorModel(CacheFunction<T> function, String commands, CacheConfigModel cacheConfigModel, String[] keys) {
         this.function = function;
         this.cacheConfigModel = cacheConfigModel;
         this.commands = commands;
@@ -76,7 +76,7 @@ public class CacheHandleProcessorModel {
     /**
      * 执行结果
      */
-    private Object result;
+    private T result;
     /**
      * 命令执行时间
      */
@@ -106,19 +106,19 @@ public class CacheHandleProcessorModel {
         this.e = e;
     }
 
-    public CacheFunction getFunction() {
+    public CacheFunction<T> getFunction() {
         return function;
     }
 
-    public void setFunction(CacheFunction function) {
+    public void setFunction(CacheFunction<T> function) {
         this.function = function;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 
-    public void setResult(Object result) {
+    public void setResult(T result) {
         this.result = result;
     }
 

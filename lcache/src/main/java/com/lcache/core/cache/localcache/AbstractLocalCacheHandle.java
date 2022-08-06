@@ -77,9 +77,9 @@ public abstract class AbstractLocalCacheHandle {
      * @param fields
      * @return
      */
-    protected abstract Object get(BaseCacheExecutor executor, CacheFunction function, String key, Object[] fields);
+    protected abstract <T> T get(BaseCacheExecutor executor, CacheFunction<T> function, String key, Object[] fields);
 
-    protected Object set(BaseCacheExecutor executor, CacheFunction function, String key) {
+    protected  <T> T set(BaseCacheExecutor executor, CacheFunction<T> function, String key) {
         try {
             return function.apply();
         } finally {
@@ -96,7 +96,7 @@ public abstract class AbstractLocalCacheHandle {
      * @param fields
      * @return
      */
-    public Object doCacheFunc(BaseCacheExecutor executor, CacheFunction function, String key, Object[] fields) {
+    public <T> T doCacheFunc(BaseCacheExecutor executor, CacheFunction<T> function, String key, Object[] fields) {
         if (executor.getCacheConfigModel().isLocalCache()) {
             //这一次命令是否不走本地缓存
             if (Boolean.TRUE.equals(executor.getNoLocalCacheOnce())) {
@@ -108,7 +108,7 @@ public abstract class AbstractLocalCacheHandle {
             }
             RedisLocalCacheFactory.RedisLocalCachePubHandle localCacheHandle = RedisLocalCacheFactory.getRedisLocalCachePubHandle(executor, function.fnToFnName(), key);
             if (null != localCacheHandle) {
-                Object res = null;
+                T res = null;
                 switch (localCacheHandle.getHandleType()) {
                     case NONE:
                         res = function.apply();

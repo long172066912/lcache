@@ -69,23 +69,23 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
     }
 
     @Override
-    public Object execute(CacheFunction function) {
+    public <T> T execute(CacheFunction<T> function) {
         return this.execute(function, -1, "");
     }
 
 
     @Override
-    public Object execute(CacheFunction function, String key) {
+    public <T> T execute(CacheFunction<T> function, String key) {
         return this.execute(function, -1, key);
     }
 
     @Override
-    public Object execute(CacheFunction function, String key, Object[] fields) {
+    public <T> T execute(CacheFunction<T> function, String key, Object[] fields) {
         return this.execute(function, -1, key, fields);
     }
 
     @Override
-    public Object execute(CacheFunction function, String[] keys) {
+    public <T> T execute(CacheFunction<T> function, String[] keys) {
         return this.execute(function, -1, keys);
     }
 
@@ -95,7 +95,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
      * @return
      */
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String key) {
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String key) {
         return this.execute(function, expireSeconds, key, null);
     }
 
@@ -105,10 +105,10 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
      * @return
      */
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String key, Object[] fields) {
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String key, Object[] fields) {
         String commands = function.fnToFnName();
         return this.doExecute(
-                new CacheHandleProcessorModel(
+                new CacheHandleProcessorModel<T>(
                         //重写function，增加本地缓存
                         () -> RedisLocalCacheFactory.getLocalCacheHandle(CommandsDataTypeUtil.getCommandsDataType(commands), this).doCacheFunc(this, function, key, fields),
                         commands,
@@ -125,8 +125,8 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
      * @return
      */
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String[] keys) {
-        return this.doExecute(new CacheHandleProcessorModel(function, function.fnToFnName(), getCacheConfigModel(), keys), expireSeconds, keys);
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String[] keys) {
+        return this.doExecute(new CacheHandleProcessorModel<T>(function, function.fnToFnName(), getCacheConfigModel(), keys), expireSeconds, keys);
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
      * @param keys
      * @return
      */
-    private Object doExecute(CacheHandleProcessorModel cacheHandleProcessorModel, int expireSeconds, String... keys) {
+    private <T> T doExecute(CacheHandleProcessorModel<T> cacheHandleProcessorModel, int expireSeconds, String... keys) {
         try {
             return postProcessorConverters.executeHandles(this.getHandleLinkList(), cacheHandleProcessorModel);
         } finally {
@@ -153,9 +153,9 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
      *
      * @return
      */
-    protected Object executeAndDelLocal(CacheFunction function, int expireSeconds, String[] keys) {
+    protected <T> T executeAndDelLocal(CacheFunction<T> function, int expireSeconds, String[] keys) {
         try {
-            return this.doExecute(new CacheHandleProcessorModel(function, function.fnToFnName(), getCacheConfigModel(), keys), expireSeconds, keys);
+            return this.doExecute(new CacheHandleProcessorModel<T>(function, function.fnToFnName(), getCacheConfigModel(), keys), expireSeconds, keys);
         } finally {
             for (int i = 0; i < keys.length; i++) {
                 AbstractLocalCacheHandle.del(this, keys[i]);

@@ -44,37 +44,37 @@ public abstract class AbstractConnectHandle implements InterfaceCommomHandle {
      * @return
      */
     @Override
-    public Object execute(CacheFunction function) {
-        return postProcessorConverters.executeHandles(this.getHandleLinkList(), new CacheHandleProcessorModel(function));
+    public <T> T execute(CacheFunction<T> function) {
+        return postProcessorConverters.executeHandles(this.getHandleLinkList(), new CacheHandleProcessorModel<T>(function));
     }
 
     @Override
-    public Object execute(CacheFunction function, String key) {
+    public <T> T execute(CacheFunction<T> function, String key) {
         return this.execute(function);
     }
 
     @Override
-    public Object execute(CacheFunction function, String key, Object[] fields) {
+    public <T> T execute(CacheFunction<T> function, String key, Object[] fields) {
         return this.execute(function);
     }
 
     @Override
-    public Object execute(CacheFunction function, String[] keys) {
+    public <T> T execute(CacheFunction<T> function, String[] keys) {
         return this.execute(function);
     }
 
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String key) {
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String key) {
         return this.execute(function);
     }
 
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String key, Object[] fields) {
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String key, Object[] fields) {
         return this.execute(function);
     }
 
     @Override
-    public Object execute(CacheFunction function, int expireSeconds, String[] keys) {
+    public <T> T execute(CacheFunction<T> function, int expireSeconds, String[] keys) {
         return this.execute(function);
     }
 }

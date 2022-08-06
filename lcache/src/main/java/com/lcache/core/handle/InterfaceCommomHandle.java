@@ -17,7 +17,7 @@ public interface InterfaceCommomHandle {
      * @param function
      * @return
      */
-    Object execute(CacheFunction function);
+    <T> T execute(CacheFunction<T> function);
 
     /**
      * 执行命令
@@ -26,7 +26,7 @@ public interface InterfaceCommomHandle {
      * @param key
      * @return
      */
-    Object execute(CacheFunction function, String key);
+    <T> T execute(CacheFunction<T> function, String key);
 
     /**
      * 执行命令，支持本地缓存
@@ -36,7 +36,7 @@ public interface InterfaceCommomHandle {
      * @param fields
      * @return
      */
-    Object execute(CacheFunction function, String key, Object[] fields);
+    <T> T execute(CacheFunction<T> function, String key, Object[] fields);
 
     /**
      * 执行命令
@@ -45,7 +45,7 @@ public interface InterfaceCommomHandle {
      * @param keys
      * @return
      */
-    Object execute(CacheFunction function, String[] keys);
+    <T> T execute(CacheFunction<T> function, String[] keys);
 
     /**
      * 执行命令，支持本地缓存，字符串单key类型
@@ -55,7 +55,7 @@ public interface InterfaceCommomHandle {
      * @param key
      * @return
      */
-    Object execute(CacheFunction function, int expireSeconds, String key);
+    <T> T execute(CacheFunction<T> function, int expireSeconds, String key);
 
     /**
      * 执行命令，支持本地缓存
@@ -66,7 +66,7 @@ public interface InterfaceCommomHandle {
      * @param fields
      * @return
      */
-    Object execute(CacheFunction function, int expireSeconds, String key, Object[] fields);
+    <T> T execute(CacheFunction<T> function, int expireSeconds, String key, Object[] fields);
 
     /**
      * 执行命令，不支持本地缓存
@@ -76,5 +76,5 @@ public interface InterfaceCommomHandle {
      * @param keys
      * @return
      */
-    Object execute(CacheFunction function, int expireSeconds, String[] keys);
+    <T> T execute(CacheFunction<T> function, int expireSeconds, String[] keys);
 }

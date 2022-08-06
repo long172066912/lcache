@@ -35,12 +35,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Boolean set(String key, String value, int timeout) {
-        return (Boolean) this.execute(() -> RedisMagicConstants.OK.equals(this.sync().setex(key, timeout, value)), key);
+        return this.execute(() -> RedisMagicConstants.OK.equals(this.sync().setex(key, timeout, value)), key);
     }
 
     @Override
     public Boolean set(String key, String value, String nxxx, String expx, long time) {
-        return (Boolean) this.execute(() -> {
+        return this.execute(() -> {
             SetArgs setArgs = new SetArgs();
             if (RedisMagicConstants.UNX.equals(nxxx) || RedisMagicConstants.NX.equals(nxxx)) {
                 setArgs.nx();
@@ -60,47 +60,37 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public String get(String key) {
-        return (String) this.execute(() -> {
-            return this.sync().get(key);
-        }, key);
+        return (String) this.execute(() -> this.sync().get(key), key);
     }
 
     @Override
     public Boolean exists(String key) {
-        return (Boolean) this.execute(() -> {
-            return this.sync().exists(key) > 0 ? true : false;
-        }, key);
+        return this.execute(() -> this.sync().exists(key) > 0 ? true : false, key);
     }
 
     @Override
     public Long del(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().del(key);
-        }, key);
+        return this.execute(() -> this.sync().del(key), key);
     }
 
     @Override
     public Boolean expire(String key, int seconds) {
-        return (Boolean) this.execute(() -> this.sync().expire(key, seconds), key);
+        return this.execute(() -> this.sync().expire(key, seconds), key);
     }
 
     @Override
     public Boolean expireAt(String key, long unixTime) {
-        return (Boolean) this.execute(() -> this.sync().expireat(key, unixTime), key);
+        return this.execute(() -> this.sync().expireat(key, unixTime), key);
     }
 
     @Override
     public Long ttl(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().ttl(key);
-        }, key);
+        return this.execute(() -> this.sync().ttl(key), key);
     }
 
     @Override
     public String getSet(String key, String value) {
-        return (String) this.execute(() -> {
-            return this.sync().getset(key, value);
-        }, key);
+        return (String) this.execute(() -> this.sync().getset(key, value), key);
     }
 
     @Override
@@ -130,9 +120,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public String setex(String key, int seconds, String value) {
-        return (String) this.execute(() -> {
-            return this.sync().setex(key, seconds, value);
-        }, key);
+        return this.execute(() -> this.sync().setex(key, seconds, value), key);
     }
 
     @Override
@@ -142,7 +130,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
             CacheExceptionFactory.throwException("Lettuce->mset 参数错误");
             return null;
         }
-        return (String) this.executeAndDelLocal(() -> this.sync().mset(keyValues), seconds, keyValues.keySet().toArray(new String[keyValues.keySet().size()]));
+        return this.executeAndDelLocal(() -> this.sync().mset(keyValues), seconds, keyValues.keySet().toArray(new String[keyValues.keySet().size()]));
     }
 
     @Override
@@ -152,12 +140,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
             CacheExceptionFactory.throwException("Lettuce->msetnx 参数错误");
             return null;
         }
-        return (Boolean) this.executeAndDelLocal(() -> this.sync().msetnx(keyValues), seconds, keyValues.keySet().toArray(new String[keyValues.keySet().size()]));
+        return this.executeAndDelLocal(() -> this.sync().msetnx(keyValues), seconds, keyValues.keySet().toArray(new String[keyValues.keySet().size()]));
     }
 
     @Override
     public Long decrBy(String key, long decrement, int seconds) {
-        return (Long) this.execute(() -> this.sync().decrby(key, decrement), seconds, key);
+        return this.execute(() -> this.sync().decrby(key, decrement), seconds, key);
     }
 
     @Override
@@ -167,63 +155,57 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long incrBy(String key, long increment, int seconds) {
-        return (Long) this.execute(() -> this.sync().incrby(key, increment), seconds, key);
+        return this.execute(() -> this.sync().incrby(key, increment), seconds, key);
     }
 
     @Override
     public Double incrByFloat(String key, double increment, int seconds) {
-        return (Double) this.execute(() -> this.sync().incrbyfloat(key, increment), seconds, key);
+        return this.execute(() -> this.sync().incrbyfloat(key, increment), seconds, key);
     }
 
     @Override
     public Long incr(String key, int seconds) {
-        return (Long) this.execute(() -> this.sync().incr(key), seconds, key);
+        return this.execute(() -> this.sync().incr(key), seconds, key);
     }
 
     @Override
     public Long append(String key, String value) {
-        return (Long) this.execute(() -> {
-            return this.sync().append(key, value);
-        }, key);
+        return this.execute(() -> this.sync().append(key, value), key);
     }
 
     @Override
     public String substr(String key, int start, int end) {
-        return (String) this.execute(() -> {
-            return this.sync().getrange(key, start, end);
-        }, key, new Object[]{start, end});
+        return (String) this.execute(() -> this.sync().getrange(key, start, end), key, new Object[]{start, end});
     }
 
     @Override
     public Boolean hset(String key, String field, String value, int seconds) {
-        return (Boolean) this.execute(() -> this.sync().hset(key, field, value), seconds, key);
+        return this.execute(() -> this.sync().hset(key, field, value), seconds, key);
     }
 
     @Override
     public Long hset(String key, Map<String, String> hash, int seconds) {
-        return (Long) this.execute(() -> RedisMagicConstants.OK.equals(this.sync().hmset(key, hash)) ? 1L : 0L, seconds, key);
+        return this.execute(() -> RedisMagicConstants.OK.equals(this.sync().hmset(key, hash)) ? 1L : 0L, seconds, key);
     }
 
     @Override
     public String hget(String key, String field) {
-        return (String) this.execute(() -> {
-            return this.sync().hget(key, field);
-        }, key, new Object[]{field});
+        return (String) this.execute(() -> this.sync().hget(key, field), key, new Object[]{field});
     }
 
     @Override
     public Boolean hsetnx(String key, String field, String value, int seconds) {
-        return (Boolean) this.execute(() -> this.sync().hsetnx(key, field, value), seconds, key);
+        return this.execute(() -> this.sync().hsetnx(key, field, value), seconds, key);
     }
 
     @Override
     public String hmset(String key, Map<String, String> hash, int seconds) {
-        return (String) this.execute(() -> this.sync().hmset(key, hash), seconds, key);
+        return this.execute(() -> this.sync().hmset(key, hash), seconds, key);
     }
 
     @Override
     public List<String> hmget(String key, String[] fields) {
-        return (List<String>) this.execute(() -> {
+        return this.execute(() -> {
             List<KeyValue<String, String>> list = this.sync().hmget(key, fields);
             if (CollectionUtils.isEmpty(list)) {
                 return new ArrayList<>();
@@ -243,7 +225,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Map<String, Object> hmgetToMap(String key, String[] fields) {
-        return (Map<String, Object>) this.execute(() -> {
+        return this.execute(() -> {
             List<KeyValue<String, Object>> list = this.sync().hmget(key, fields);
             if (CollectionUtils.isEmpty(list)) {
                 return new HashMap<>(2);
@@ -260,7 +242,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Map<String, Object> hmgetToMapCanNull(String key, String[] fields) {
-        return (Map<String, Object>) this.execute(() -> {
+        return this.execute(() -> {
             List<KeyValue<String, Object>> list = this.sync().hmget(key, fields);
             if (CollectionUtils.isEmpty(list)) {
                 return new HashMap<>(2);
@@ -280,38 +262,38 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long hincrBy(String key, String field, long value, int seconds) {
-        return (Long) this.execute(() -> this.sync().hincrby(key, field, value), seconds, key);
+        return this.execute(() -> this.sync().hincrby(key, field, value), seconds, key);
     }
 
     @Override
     public Double hincrByFloat(String key, String field, double value, int seconds) {
-        return (Double) this.execute(() -> this.sync().hincrbyfloat(key, field, value), seconds, key);
+        return this.execute(() -> this.sync().hincrbyfloat(key, field, value), seconds, key);
     }
 
     @Override
     public Boolean hexists(String key, String field) {
-        return (Boolean) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().hexists(key, field);
         }, key, new Object[]{field});
     }
 
     @Override
     public Long hdel(String key, String field) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().hdel(key, field);
         }, key);
     }
 
     @Override
     public Long hdel(String key, String[] fields) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().hdel(key, fields);
         }, key);
     }
 
     @Override
     public Long hlen(String key) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().hlen(key);
         }, key);
     }
@@ -329,59 +311,47 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> hvals(String key) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().hvals(key);
-        }, key);
+        return (List<String>) this.execute(() -> this.sync().hvals(key), key);
     }
 
     @Override
     public Map<String, String> hgetAll(String key) {
-        return (Map<String, String>) this.execute(() -> {
-            return this.sync().hgetall(key);
-        }, key);
+        return (Map<String, String>) this.execute(() -> this.sync().hgetall(key), key);
     }
 
     @Override
     public Long rpush(String key, String string, int seconds) {
-        return (Long) this.execute(() -> this.sync().rpush(key, string), seconds, key);
+        return this.execute(() -> this.sync().rpush(key, string), seconds, key);
     }
 
     @Override
     public Long lpush(String key, String string, int seconds) {
-        return (Long) this.execute(() -> {
-            return this.sync().lpush(key, string);
-        }, key);
+        return this.execute(() -> this.sync().lpush(key, string), key);
     }
 
     @Override
     public Long rpush(String key, String[] strings, int seconds) {
-        return (Long) this.execute(() -> this.sync().rpush(key, strings), seconds, key);
+        return this.execute(() -> this.sync().rpush(key, strings), seconds, key);
     }
 
     @Override
     public Long lpush(String key, String[] strings, int seconds) {
-        return (Long) this.execute(() -> this.sync().lpush(key, strings), seconds, key);
+        return this.execute(() -> this.sync().lpush(key, strings), seconds, key);
     }
 
     @Override
     public Long llen(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().llen(key);
-        }, key);
+        return this.execute(() -> this.sync().llen(key), key);
     }
 
     @Override
     public List<String> lrange(String key, long start, long stop) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().lrange(key, start, stop);
-        }, key);
+        return (List<String>) this.execute(() -> this.sync().lrange(key, start, stop), key);
     }
 
     @Override
     public String ltrim(String key, long start, long stop) {
-        return (String) this.execute(() -> {
-            return this.sync().ltrim(key, start, stop);
-        }, key);
+        return this.execute(() -> this.sync().ltrim(key, start, stop), key);
     }
 
     @Override
