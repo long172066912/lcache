@@ -356,35 +356,27 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public String lindex(String key, long index) {
-        return (String) this.execute(() -> {
-            return this.sync().lindex(key, index);
-        }, key);
+        return (String) this.execute(() -> this.sync().lindex(key, index), key);
     }
 
     @Override
     public String lset(String key, long index, String value, int seconds) {
-        return (String) this.execute(() -> this.sync().lset(key, index, value), seconds, key);
+        return this.execute(() -> this.sync().lset(key, index, value), seconds, key);
     }
 
     @Override
     public Long lrem(String key, long count, String value) {
-        return (Long) this.execute(() -> {
-            return this.sync().lrem(key, count, value);
-        }, key);
+        return this.execute(() -> this.sync().lrem(key, count, value), key);
     }
 
     @Override
     public String lpop(String key) {
-        return (String) this.execute(() -> {
-            return this.sync().lpop(key);
-        }, key);
+        return (String) this.execute(() -> this.sync().lpop(key), key);
     }
 
     @Override
     public String rpop(String key) {
-        return (String) this.execute(() -> {
-            return this.sync().rpop(key);
-        }, key);
+        return (String) this.execute(() -> this.sync().rpop(key), key);
     }
 
     @Override
@@ -394,109 +386,87 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long sadd(String key, String member, int seconds) {
-        return (Long) this.execute(() -> this.sync().sadd(key, member), seconds, key);
+        return this.execute(() -> this.sync().sadd(key, member), seconds, key);
     }
 
     @Override
     public Long sadd(String key, String[] members, int seconds) {
-        return (Long) this.execute(() -> this.sync().sadd(key, members), seconds, key);
+        return this.execute(() -> this.sync().sadd(key, members), seconds, key);
     }
 
     @Override
     public Set<String> smembers(String key) {
-        return (Set<String>) this.execute(() -> {
-            return this.sync().smembers(key);
-        }, key);
+        return (Set<String>) this.execute(() -> this.sync().smembers(key), key);
     }
 
     @Override
     public Long srem(String key, String member) {
-        return (Long) this.execute(() -> {
-            return this.sync().srem(key, member);
-        }, key);
+        return this.execute(() -> this.sync().srem(key, member), key);
     }
 
     @Override
     public Long srem(String key, String[] members) {
-        return (Long) this.execute(() -> {
-            return this.sync().srem(key, members);
-        }, key);
+        return this.execute(() -> this.sync().srem(key, members), key);
     }
 
     @Override
     public String spop(String key) {
-        return (String) this.execute(() -> {
-            return this.sync().spop(key);
-        }, key);
+        return (String) this.execute(() -> this.sync().spop(key), key);
     }
 
     @Override
     public Set<String> spop(String key, long count) {
-        return (Set<String>) this.execute(() -> {
-            return this.sync().spop(key, count);
-        }, key);
+        return (Set<String>) this.execute(() -> this.sync().spop(key, count), key);
     }
 
     @Override
     public Boolean smove(String srckey, String dstkey, String member) {
-        return (Boolean) this.execute(() -> this.sync().smove(srckey, dstkey, member), srckey);
+        return this.execute(() -> this.sync().smove(srckey, dstkey, member), srckey);
     }
 
     @Override
     public Long scard(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().scard(key);
-        }, key);
+        return this.execute(() -> this.sync().scard(key), key);
     }
 
     @Override
     public Boolean sismember(String key, String member) {
-        return (Boolean) this.execute(() -> {
-            return this.sync().sismember(key, member);
-        }, key, new String[]{member});
+        return this.execute(() -> this.sync().sismember(key, member), key, new String[]{member});
     }
 
     @Override
     public Set<String> sinter(String... keys) {
-        return (Set<String>) this.execute(() -> {
-            return this.sync().sinter(keys);
-        }, keys);
+        return (Set<String>) this.execute(() -> this.sync().sinter(keys), keys);
     }
 
     @Override
     public Long sinterstore(String dstkey, int seconds, String... keys) {
-        return (Long) this.execute(() -> this.sync().sinterstore(dstkey, keys), seconds, keys);
+        return this.execute(() -> this.sync().sinterstore(dstkey, keys), seconds, keys);
     }
 
     @Override
     public Set<String> sunion(String... keys) {
-        return (Set<String>) this.execute(() -> {
-            return this.sync().sunion(keys);
-        }, keys);
+        return (Set<String>) this.execute(() -> this.sync().sunion(keys), keys);
     }
 
     @Override
     public Long sunionstore(String dstkey, int seconds, String... keys) {
-        return (Long) this.execute(() -> this.sync().sunionstore(dstkey, keys), seconds, keys);
+        return this.execute(() -> this.sync().sunionstore(dstkey, keys), seconds, keys);
     }
 
     @Override
     public Set<String> sdiff(String... keys) {
-        return (Set<String>) this.execute(() -> {
-            return this.sync().sdiff(keys);
-        }, keys);
+        return (Set<String>) this.execute(() -> this.sync().sdiff(keys), keys);
     }
 
     @Override
     public Long sdiffstore(String dstkey, int seconds, String... keys) {
-        return (Long) this.execute(() -> this.sync().sdiffstore(dstkey, keys), seconds, keys);
+        return this.execute(() -> this.sync().sdiffstore(dstkey, keys), seconds, keys);
     }
 
     @Override
     public String srandmember(String key) {
-        return (String) this.execute(() -> {
-            return this.sync().srandmember(key);
-        }, key);
+        return (String) this.execute(() -> this.sync().srandmember(key), key);
     }
 
     @Override
