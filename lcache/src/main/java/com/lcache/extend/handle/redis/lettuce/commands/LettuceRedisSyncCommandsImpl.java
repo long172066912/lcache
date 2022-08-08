@@ -471,14 +471,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> srandmember(String key, int count) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().srandmember(key, count);
-        }, key);
+        return (List<String>) this.execute(() -> this.sync().srandmember(key, count), key);
     }
 
     @Override
     public Long zadd(String key, double score, String member, int seconds) {
-        return (Long) this.execute(() -> this.sync().zadd(key, score, member), seconds, key);
+        return this.execute(() -> this.sync().zadd(key, score, member), seconds, key);
     }
 
     @Override
@@ -488,7 +486,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zadd(String key, double score, String member, ZAddParams params, int seconds) {
-        return (Long) this.execute(() -> this.sync().zadd(key, this.zAddParamsToZaddArgs(params), score, member), seconds, key);
+        return this.execute(() -> this.sync().zadd(key, this.zAddParamsToZaddArgs(params), score, member), seconds, key);
     }
 
     private ZAddArgs zAddParamsToZaddArgs(ZAddParams params) {
@@ -535,12 +533,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zadd(String key, Map<String, Double> scoreMembers, int seconds) {
-        return (Long) this.execute(() -> this.sync().zadd(key, this.scoreMembersToObjects(scoreMembers)), seconds, key);
+        return this.execute(() -> this.sync().zadd(key, this.scoreMembersToObjects(scoreMembers)), seconds, key);
     }
 
     @Override
     public Long zadd(String key, Map<String, Double> scoreMembers, ZAddParams params, int seconds) {
-        return (Long) this.execute(() -> this.sync().zadd(key, this.zAddParamsToZaddArgs(params), this.scoreMembersToObjects(scoreMembers)), seconds, key);
+        return this.execute(() -> this.sync().zadd(key, this.zAddParamsToZaddArgs(params), this.scoreMembersToObjects(scoreMembers)), seconds, key);
     }
 
     @Override
@@ -556,40 +554,32 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zrem(String key, String member) {
-        return (Long) this.execute(() -> {
-            return this.sync().zrem(key, member);
-        }, key);
+        return this.execute(() -> this.sync().zrem(key, member), key);
     }
 
     @Override
     public Long zrem(String key, String[] members) {
-        return (Long) this.execute(() -> {
-            return this.sync().zrem(key, members);
-        }, key);
+        return this.execute(() -> this.sync().zrem(key, members), key);
     }
 
     @Override
     public Double zincrby(String key, double increment, String member, int seconds) {
-        return (Double) this.execute(() -> this.sync().zincrby(key, increment, member), seconds, key);
+        return this.execute(() -> this.sync().zincrby(key, increment, member), seconds, key);
     }
 
     @Override
     public Double zincrby(String key, double increment, String member, ZIncrByParams params, int seconds) {
-        return (Double) this.execute(() -> this.sync().zaddincr(key, this.zIncrByParamsToZaddArgs(params), increment, member), seconds, key);
+        return this.execute(() -> this.sync().zaddincr(key, this.zIncrByParamsToZaddArgs(params), increment, member), seconds, key);
     }
 
     @Override
     public Long zrank(String key, String member) {
-        return (Long) this.execute(() -> {
-            return this.sync().zrank(key, member);
-        }, key);
+        return this.execute(() -> this.sync().zrank(key, member), key);
     }
 
     @Override
     public Long zrevrank(String key, String member) {
-        return (Long) this.execute(() -> {
-            return this.sync().zrevrank(key, member);
-        }, key);
+        return this.execute(() -> this.sync().zrevrank(key, member), key);
     }
 
     @Override
@@ -635,30 +625,22 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Set<Tuple> zrangeWithScores(String key, long start, long stop) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrangeWithScores(key, start, stop));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrangeWithScores(key, start, stop)), key);
     }
 
     @Override
     public Set<Tuple> zrevrangeWithScores(String key, long start, long stop) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrevrangeWithScores(key, start, stop));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrevrangeWithScores(key, start, stop)), key);
     }
 
     @Override
     public Long zcard(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().zcard(key);
-        }, key);
+        return this.execute(() -> this.sync().zcard(key), key);
     }
 
     @Override
     public Double zscore(String key, String member) {
-        return (Double) this.execute(() -> {
-            return this.sync().zscore(key, member);
-        }, key);
+        return this.execute(() -> this.sync().zscore(key, member), key);
     }
 
     @Override
@@ -668,7 +650,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScoredValue zpopmax(String key) {
-        return (ScoredValue) this.execute(() -> this.sync().zpopmax(key), key);
+        return this.execute(() -> this.sync().zpopmax(key), key);
     }
 
     @Override
@@ -678,7 +660,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScoredValue zpopmin(String key) {
-        return (ScoredValue) this.execute(() -> this.sync().zpopmin(key), key);
+        return this.execute(() -> this.sync().zpopmin(key), key);
     }
 
     @Override
@@ -698,9 +680,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> sort(String key) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().sort(key);
-        }, key);
+        return (List<String>) this.execute(() -> this.sync().sort(key), key);
     }
 
     @Override
@@ -711,9 +691,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> sort(String key, SortArgs sortArgs) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().sort(key, sortArgs);
-        }, key);
+        return (List<String>) this.execute(() -> this.sync().sort(key, sortArgs), key);
     }
 
     @Override
@@ -724,9 +702,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long sort(String key, SortArgs sortArgs, String dstkey) {
-        return (Long) this.execute(() -> {
-            return this.sync().sortStore(key, sortArgs, dstkey);
-        }, key);
+        return this.execute(() -> this.sync().sortStore(key, sortArgs, dstkey), key);
     }
 
     @Override
