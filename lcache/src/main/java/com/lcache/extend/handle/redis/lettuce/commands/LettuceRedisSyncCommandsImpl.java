@@ -707,14 +707,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long sort(String key, String dstkey) {
-        return (Long) this.execute(() -> {
-            return this.sync().sortStore(key, new SortArgs(), dstkey);
-        }, key);
+        return this.execute(() -> this.sync().sortStore(key, new SortArgs(), dstkey), key);
     }
 
     @Override
     public List<String> blpop(int timeout, String... keys) {
-        return (List<String>) this.execute(() -> {
+        return this.execute(() -> {
             KeyValue blpop = this.sync().blpop(timeout, keys);
             if (null != blpop) {
                 List<String> res = new ArrayList<>();
@@ -727,7 +725,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> brpop(int timeout, String[] keys) {
-        return (List<String>) this.execute(() -> {
+        return this.execute(() -> {
             KeyValue brpop = this.sync().brpop(timeout, keys);
             if (null != brpop) {
                 List<String> res = new ArrayList<>();
@@ -740,14 +738,14 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zcount(String key, double min, double max) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().zcount(key, min, max);
         }, key);
     }
 
     @Override
     public Long zcount(String key, String min, String max) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             return this.sync().zcount(key, min, max);
         }, key);
     }
@@ -798,30 +796,22 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Set<Tuple> zrangeByScoreWithScores(String key, double min, double max) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max)), key);
     }
 
     @Override
     public Set<Tuple> zrangeByScoreWithScores(String key, String min, String max) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max)), key);
     }
 
     @Override
     public Set<Tuple> zrangeByScoreWithScores(String key, double min, double max, int offset, int count) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max, offset, count));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max, offset, count)), key);
     }
 
     @Override
     public Set<Tuple> zrangeByScoreWithScores(String key, String min, String max, int offset, int count) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max, offset, count));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrangebyscoreWithScores(key, min, max, offset, count)), key);
     }
 
     @Override
@@ -859,23 +849,17 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Set<Tuple> zrevrangeByScoreWithScores(String key, double max, double min) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min)), key);
     }
 
     @Override
     public Set<Tuple> zrevrangeByScoreWithScores(String key, double max, double min, int offset, int count) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min, offset, count));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min, offset, count)), key);
     }
 
     @Override
     public Set<Tuple> zrevrangeByScoreWithScores(String key, String max, String min, int offset, int count) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min, offset, count));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min, offset, count)), key);
     }
 
     @Override
@@ -891,37 +875,27 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Set<Tuple> zrevrangeByScoreWithScores(String key, String max, String min) {
-        return (Set<Tuple>) this.execute(() -> {
-            return this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min));
-        }, key);
+        return (Set<Tuple>) this.execute(() -> this.scoreValuesToTuples(this.sync().zrevrangebyscoreWithScores(key, max, min)), key);
     }
 
     @Override
     public Long zremrangeByRank(String key, long start, long stop) {
-        return (Long) this.execute(() -> {
-            return this.sync().zremrangebyrank(key, start, stop);
-        }, key);
+        return this.execute(() -> this.sync().zremrangebyrank(key, start, stop), key);
     }
 
     @Override
     public Long zremrangeByScore(String key, double min, double max) {
-        return (Long) this.execute(() -> {
-            return this.sync().zremrangebyscore(key, min, max);
-        }, key);
+        return this.execute(() -> this.sync().zremrangebyscore(key, min, max), key);
     }
 
     @Override
     public Long zremrangeByScore(String key, String min, String max) {
-        return (Long) this.execute(() -> {
-            return this.sync().zremrangebyscore(key, min, max);
-        }, key);
+        return this.execute(() -> this.sync().zremrangebyscore(key, min, max), key);
     }
 
     @Override
     public Long zunionstore(String dstkey, String... sets) {
-        return (Long) this.execute(() -> {
-            return this.sync().zunionstore(dstkey, sets);
-        }, sets);
+        return this.execute(() -> this.sync().zunionstore(dstkey, sets), sets);
     }
 
     private ZStoreArgs zParamsToZstoreArgs(ZParams params) {
@@ -966,30 +940,22 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zunionstore(String dstkey, ZParams params, String... sets) {
-        return (Long) this.execute(() -> {
-            return this.sync().zunionstore(dstkey, this.zParamsToZstoreArgs(params), sets);
-        }, sets);
+        return this.execute(() -> this.sync().zunionstore(dstkey, this.zParamsToZstoreArgs(params), sets), sets);
     }
 
     @Override
     public Long zinterstore(String dstkey, String... sets) {
-        return (Long) this.execute(() -> {
-            return this.sync().zinterstore(dstkey, sets);
-        }, sets);
+        return this.execute(() -> this.sync().zinterstore(dstkey, sets), sets);
     }
 
     @Override
     public Long zinterstore(String dstkey, ZParams params, String... sets) {
-        return (Long) this.execute(() -> {
-            return this.sync().zinterstore(dstkey, this.zParamsToZstoreArgs(params), sets);
-        }, sets);
+        return this.execute(() -> this.sync().zinterstore(dstkey, this.zParamsToZstoreArgs(params), sets), sets);
     }
 
     @Override
     public Long zlexcount(String key, String min, String max) {
-        return (Long) this.execute(() -> {
-            return this.sync().zlexcount(key, min, max);
-        }, key);
+        return this.execute(() -> this.sync().zlexcount(key, min, max), key);
     }
 
     @Override
