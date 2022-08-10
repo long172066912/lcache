@@ -1005,54 +1005,42 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long zremrangeByLex(String key, String min, String max) {
-        return (Long) this.execute(() -> {
-            return this.sync().zremrangebylex(key, min, max);
-        }, key);
+        return this.execute(() -> this.sync().zremrangebylex(key, min, max), key);
     }
 
     @Override
     public Long strlen(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().strlen(key);
-        }, key);
+        return this.execute(() -> this.sync().strlen(key), key);
     }
 
     @Override
     public Long lpushx(String key, String... string) {
-        return (Long) this.execute(() -> {
-            return this.sync().lpushx(key, string);
-        }, key);
+        return this.execute(() -> this.sync().lpushx(key, string), key);
     }
 
     @Override
     public Long rpushx(String key, String... string) {
-        return (Long) this.execute(() -> {
-            return this.sync().rpushx(key, string);
-        }, key);
+        return this.execute(() -> this.sync().rpushx(key, string), key);
     }
 
     @Override
     public String echo(String string) {
-        return (String) this.execute(() -> {
-            return this.sync().echo(string);
-        }, string);
+        return (String) this.execute(() -> this.sync().echo(string), string);
     }
 
     @Override
     public Long linsert(String key, Client.LIST_POSITION where, String pivot, String value, int seconds) {
-        return (Long) this.execute(() -> this.sync().linsert(key, where == Client.LIST_POSITION.BEFORE ? true : false, pivot, value), seconds, key);
+        return this.execute(() -> this.sync().linsert(key, where == Client.LIST_POSITION.BEFORE ? true : false, pivot, value), seconds, key);
     }
 
     @Override
     public String brpoplpush(String source, String destination, int timeout) {
-        return (String) this.execute(() -> {
-            return this.sync().brpoplpush(timeout, source, destination);
-        }, source);
+        return (String) this.execute(() -> this.sync().brpoplpush(timeout, source, destination), source);
     }
 
     @Override
     public Boolean setbit(String key, long offset, boolean value, int seconds) {
-        return (Boolean) this.execute(() -> this.sync().setbit(key, offset, value ? 1 : 0) > 0 ? Boolean.TRUE : Boolean.FALSE, seconds, key);
+        return this.execute(() -> this.sync().setbit(key, offset, value ? 1 : 0) > 0 ? Boolean.TRUE : Boolean.FALSE, seconds, key);
     }
 
     @Override
@@ -1061,42 +1049,32 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
             CacheExceptionFactory.throwException("Lettuce->setbit(String key, long offset, String value) value必须为0或1");
             return false;
         }
-        return (Boolean) this.execute(() -> this.sync().setbit(key, offset, Integer.valueOf(value)) > 0 ? Boolean.TRUE : Boolean.FALSE, seconds, key);
+        return this.execute(() -> this.sync().setbit(key, offset, Integer.valueOf(value)) > 0 ? Boolean.TRUE : Boolean.FALSE, seconds, key);
     }
 
     @Override
     public Boolean getbit(String key, long offset) {
-        return (Boolean) this.execute(() -> {
-            return this.sync().getbit(key, offset) > 0 ? Boolean.TRUE : Boolean.FALSE;
-        }, key);
+        return this.execute(() -> this.sync().getbit(key, offset) > 0 ? Boolean.TRUE : Boolean.FALSE, key);
     }
 
     @Override
     public Long setrange(String key, long offset, String value) {
-        return (Long) this.execute(() -> {
-            return this.sync().setrange(key, offset, value);
-        }, key);
+        return this.execute(() -> this.sync().setrange(key, offset, value), key);
     }
 
     @Override
     public String getrange(String key, long startOffset, long endOffset) {
-        return (String) this.execute(() -> {
-            return this.sync().getrange(key, startOffset, endOffset);
-        }, key);
+        return (String) this.execute(() -> this.sync().getrange(key, startOffset, endOffset), key);
     }
 
     @Override
     public Long bitpos(String key, boolean value) {
-        return (Long) this.execute(() -> {
-            return this.sync().bitpos(key, value);
-        }, key);
+        return this.execute(() -> this.sync().bitpos(key, value), key);
     }
 
     @Override
     public Long bitpos(String key, boolean state, long start, long end) {
-        return (Long) this.execute(() -> {
-            return this.sync().bitpos(key, state, start, end);
-        }, key);
+        return this.execute(() -> this.sync().bitpos(key, state, start, end), key);
     }
 
     @Override
@@ -1186,9 +1164,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long publish(String channel, String message) {
-        return (Long) this.execute(() -> {
-            return this.sync().publish(channel, message);
-        }, channel);
+        return this.execute(() -> this.sync().publish(channel, message), channel);
     }
 
     @Override
@@ -1239,35 +1215,27 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
     @Override
     public List<Slowlog> slowlogGet() {
         //TODO 类型转换可能有问题
-        return (List<Slowlog>) this.execute(() -> {
-            return this.sync().slowlogGet();
-        }, "");
+        return (List<Slowlog>) this.execute(() -> this.sync().slowlogGet());
     }
 
     @Override
     public List<Slowlog> slowlogGet(long entries) {
-        return (List<Slowlog>) this.execute(() -> {
-            return this.sync().slowlogGet((int) entries);
-        }, "");
+        return (List<Slowlog>) this.execute(() -> this.sync().slowlogGet((int) entries));
     }
 
     @Override
     public Long bitcount(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().bitcount(key);
-        }, key);
+        return this.execute(() -> this.sync().bitcount(key), key);
     }
 
     @Override
     public Long bitcount(String key, long start, long end) {
-        return (Long) this.execute(() -> {
-            return this.sync().bitcount(key, start, end);
-        }, key, new Object[]{start, end});
+        return this.execute(() -> this.sync().bitcount(key, start, end), key, new Object[]{start, end});
     }
 
     @Override
     public Long bitop(BitOP op, String destKey, String... srcKeys) {
-        return (Long) this.execute(() -> {
+        return this.execute(() -> {
             switch (op) {
                 case OR:
                     return this.sync().bitopOr(destKey, srcKeys);
@@ -1283,26 +1251,22 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Boolean pexpire(String key, long milliseconds) {
-        return (Boolean) this.execute(() -> this.sync().pexpire(key, milliseconds), key);
+        return this.execute(() -> this.sync().pexpire(key, milliseconds), key);
     }
 
     @Override
     public Boolean pexpireAt(String key, long millisecondsTimestamp) {
-        return (Boolean) this.execute(() -> this.sync().pexpireat(key, millisecondsTimestamp), key);
+        return this.execute(() -> this.sync().pexpireat(key, millisecondsTimestamp), key);
     }
 
     @Override
     public Long pttl(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().pttl(key);
-        }, key);
+        return this.execute(() -> this.sync().pttl(key), key);
     }
 
     @Override
     public String psetex(String key, long milliseconds, String value) {
-        return (String) this.execute(() -> {
-            return this.sync().psetex(key, milliseconds, value);
-        }, key);
+        return this.execute(() -> this.sync().psetex(key, milliseconds, value), key);
     }
 
     @Override
