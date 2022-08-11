@@ -1271,29 +1271,29 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<String> scan(String cursor) {
-        return (ScanResult<String>) this.execute(() -> {
+        return this.execute(() -> {
             KeyScanCursor scan = this.sync().scan(this.getScanCursor(cursor));
             if (null != scan) {
                 return new ScanResult<String>(scan.getCursor(), scan.getKeys());
             }
             return null;
-        }, "");
+        });
     }
 
     @Override
     public ScanResult<String> scan(String cursor, ScanParams params) {
-        return (ScanResult<String>) this.execute(() -> {
+        return this.execute(() -> {
             KeyScanCursor scan = this.sync().scan(this.getScanCursor(cursor), this.scanParamsToScanArgs(params));
             if (null != scan) {
                 return new ScanResult<String>(scan.getCursor(), scan.getKeys());
             }
             return null;
-        }, "");
+        });
     }
 
     @Override
     public ScanResult<Map.Entry<String, String>> hscan(String key, String cursor) {
-        return (ScanResult<Map.Entry<String, String>>) this.execute(() -> {
+        return this.execute(() -> {
             MapScanCursor scan = this.sync().hscan(key, this.getScanCursor(cursor));
             if (null != scan) {
                 return new ScanResult<Map.Entry<String, String>>(scan.getCursor(), new ArrayList<>(scan.getMap().entrySet()));
@@ -1304,7 +1304,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<Map.Entry<String, String>> hscan(String key, String cursor, ScanParams params) {
-        return (ScanResult<Map.Entry<String, String>>) this.execute(() -> {
+        return this.execute(() -> {
             MapScanCursor scan = this.sync().hscan(key, this.getScanCursor(cursor), this.scanParamsToScanArgs(params));
             if (null != scan) {
                 return new ScanResult<Map.Entry<String, String>>(scan.getCursor(), new ArrayList<>(scan.getMap().entrySet()));
@@ -1315,7 +1315,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<String> sscan(String key, String cursor) {
-        return (ScanResult<String>) this.execute(() -> {
+        return this.execute(() -> {
             ValueScanCursor scan = this.sync().sscan(key, this.getScanCursor(cursor));
             if (null != scan) {
                 return new ScanResult<String>(scan.getCursor(), scan.getValues());
@@ -1326,7 +1326,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<String> sscan(String key, String cursor, ScanParams params) {
-        return (ScanResult<String>) this.execute(() -> {
+        return this.execute(() -> {
             ValueScanCursor scan = this.sync().sscan(key, this.getScanCursor(cursor), this.scanParamsToScanArgs(params));
             if (null != scan) {
                 return new ScanResult<String>(scan.getCursor(), scan.getValues());
@@ -1337,7 +1337,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<Tuple> zscan(String key, String cursor) {
-        return (ScanResult<Tuple>) this.execute(() -> {
+        return this.execute(() -> {
             ScoredValueScanCursor scan = this.sync().zscan(key, this.getScanCursor(cursor));
             if (null != scan) {
                 return new ScanResult<Tuple>(scan.getCursor(), this.scoreValuesToTupleList(scan.getValues()));
@@ -1348,7 +1348,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public ScanResult<Tuple> zscan(String key, String cursor, ScanParams params) {
-        return (ScanResult<Tuple>) this.execute(() -> {
+        return this.execute(() -> {
             ScoredValueScanCursor scan = this.sync().zscan(key, this.getScanCursor(cursor), this.scanParamsToScanArgs(params));
             if (null != scan) {
                 return new ScanResult<Tuple>(scan.getCursor(), this.scoreValuesToTupleList(scan.getValues()));
@@ -1392,54 +1392,42 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> pubsubChannels(String pattern) {
-        return (List<String>) this.execute(() -> {
-            return this.sync().pubsubChannels(pattern);
-        }, "");
+        return (List<String>) this.execute(() -> this.sync().pubsubChannels(pattern));
     }
 
     @Override
     public Long pubsubNumPat() {
-        return (Long) this.execute(() -> {
-            return this.sync().pubsubNumpat();
-        }, "");
+        return this.execute(() -> this.sync().pubsubNumpat());
     }
 
     @Override
     public Map<String, String> pubsubNumSub(String... channels) {
-        return (Map<String, String>) this.execute(() -> {
-            return this.sync().pubsubNumsub(channels);
-        }, "");
+        return (Map<String, String>) this.execute(() -> this.sync().pubsubNumsub(channels));
     }
 
     @Override
     public Long pfadd(String key, int seconds, String... elements) {
-        return (Long) this.execute(() -> this.sync().pfadd(key, elements), seconds, key);
+        return this.execute(() -> this.sync().pfadd(key, elements), seconds, key);
     }
 
     @Override
     public long pfcount(String key) {
-        return (Long) this.execute(() -> {
-            return this.sync().pfcount(key);
-        }, key);
+        return this.execute(() -> this.sync().pfcount(key), key);
     }
 
     @Override
     public long pfcount(String... keys) {
-        return (Long) this.execute(() -> {
-            return this.sync().pfcount(keys);
-        }, keys);
+        return this.execute(() ->this.sync().pfcount(keys), keys);
     }
 
     @Override
     public String pfmerge(String destkey, int seconds, String... sourcekeys) {
-        return (String) this.execute(() -> this.sync().pfmerge(destkey, sourcekeys), seconds, sourcekeys);
+        return this.execute(() -> this.sync().pfmerge(destkey, sourcekeys), seconds, sourcekeys);
     }
 
     @Override
     public List<String> blpop(int timeout, String key) {
-        KeyValue execute = (KeyValue) this.execute(() -> {
-            return this.sync().blpop(timeout, key);
-        }, key);
+        KeyValue execute = this.execute(() -> this.sync().blpop(timeout, key), key);
         if (null != execute) {
             ArrayList<String> strings = new ArrayList<>();
             strings.add(String.valueOf(execute.getValue()));
@@ -1450,9 +1438,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<String> brpop(int timeout, String key) {
-        KeyValue execute = (KeyValue) this.execute(() -> {
-            return this.sync().brpop(timeout, key);
-        }, key);
+        KeyValue execute = this.execute(() -> this.sync().brpop(timeout, key), key);
         if (null != execute) {
             ArrayList<String> strings = new ArrayList<>();
             strings.add(String.valueOf(execute.getValue()));
