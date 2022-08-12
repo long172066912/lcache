@@ -1449,13 +1449,13 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long geoadd(String key, double longitude, double latitude, String member, int seconds) {
-        return (Long) this.execute(() -> this.sync().geoadd(key, longitude, latitude, member), seconds, key);
+        return this.execute(() -> this.sync().geoadd(key, longitude, latitude, member), seconds, key);
     }
 
     @Override
     public Long geoadd(String key, Map<String, GeoCoordinate> memberCoordinateMap, int seconds) {
         if (null != memberCoordinateMap && memberCoordinateMap.size() > 0) {
-            return (Long) this.execute(() -> {
+            return this.execute(() -> {
                 Object[] params = new Object[memberCoordinateMap.size() * 3];
                 int i = 0;
                 for (Map.Entry<String, GeoCoordinate> stringGeoCoordinateEntry : memberCoordinateMap.entrySet()) {
@@ -1471,21 +1471,17 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Double geodist(String key, String member1, String member2) {
-        return (Double) this.execute(() -> {
-            return this.sync().geodist(key, member1, member2, GeoArgs.Unit.m);
-        }, key);
+        return this.execute(() -> this.sync().geodist(key, member1, member2, GeoArgs.Unit.m), key);
     }
 
     @Override
     public Double geodist(String key, String member1, String member2, GeoUnit unit) {
-        return (Double) this.execute(() -> {
-            return this.sync().geodist(key, member1, member2, this.geoUnitToGeoArgs(unit));
-        }, key);
+        return this.execute(() -> this.sync().geodist(key, member1, member2, this.geoUnitToGeoArgs(unit)), key);
     }
 
     @Override
     public List<String> geohash(String key, String... members) {
-        return (List<String>) this.execute(() -> {
+        return this.execute(() -> {
             List<Value<String>> geohash = this.sync().geohash(key, members);
             if (CollectionUtils.isNotEmpty(geohash)) {
                 List<String> list = new ArrayList<>();
@@ -1529,9 +1525,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<GeoCoordinate> geopos(String key, String... members) {
-        return (List<GeoCoordinate>) this.execute(() -> {
-            return this.geoCoordinatesToGeoCoordinate(this.sync().geopos(key, members));
-        }, key);
+        return (List<GeoCoordinate>) this.execute(() -> this.geoCoordinatesToGeoCoordinate(this.sync().geopos(key, members)), key);
     }
 
     private List<GeoRadiusResponse> geoWithinsToGeoRadiusResponses(List<GeoWithin> list) {
@@ -1554,9 +1548,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<GeoRadiusResponse> georadius(String key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam param) {
-        return (List<GeoRadiusResponse>) this.execute(() -> {
-            return this.geoWithinsToGeoRadiusResponses(this.sync().georadius(key, longitude, latitude, radius, this.geoUnitToGeoArgs(unit), this.geoRadiusParamToGeoArgs(param)));
-        }, key);
+        return (List<GeoRadiusResponse>) this.execute(() -> this.geoWithinsToGeoRadiusResponses(this.sync().georadius(key, longitude, latitude, radius, this.geoUnitToGeoArgs(unit), this.geoRadiusParamToGeoArgs(param))), key);
     }
 
 //    @Override
@@ -1569,9 +1561,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<GeoRadiusResponse> georadiusByMember(String key, String member, double radius, GeoUnit unit, GeoRadiusParam param) {
-        return (List<GeoRadiusResponse>) this.execute(() -> {
-            return this.geoWithinsToGeoRadiusResponses(this.sync().georadiusbymember(key, member, radius, this.geoUnitToGeoArgs(unit), this.geoRadiusParamToGeoArgs(param)));
-        }, key);
+        return (List<GeoRadiusResponse>) this.execute(() -> this.geoWithinsToGeoRadiusResponses(this.sync().georadiusbymember(key, member, radius, this.geoUnitToGeoArgs(unit), this.geoRadiusParamToGeoArgs(param))), key);
     }
 
     private GeoArgs.Unit geoUnitToGeoArgs(GeoUnit unit) {
@@ -1619,9 +1609,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<Long> bitfield(String key, BitFieldArgs bitFieldArgs) {
-        return (List<Long>) this.execute(() -> {
-            return this.sync().bitfield(key, bitFieldArgs);
-        }, key);
+        return (List<Long>) this.execute(() -> this.sync().bitfield(key, bitFieldArgs), key);
     }
 
     @Override
