@@ -1614,9 +1614,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Long hstrlen(String key, String field) {
-        return (Long) this.execute(() -> {
-            return this.sync().hstrlen(key, field);
-        }, key);
+        return this.execute(() -> this.sync().hstrlen(key, field), key);
     }
 
     @Override
@@ -1631,16 +1629,12 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
                 keys[i >> 1] = params[i];
             }
         }
-        return this.execute(() -> {
-            return this.sync().eval(script, outputType, keys, values);
-        });
+        return this.execute(() -> this.sync().eval(script, outputType, keys, values));
     }
 
     @Override
     public Object eval(String script, ScriptOutputType outputType, List<String> keys, List<String> args) {
-        return this.execute(() -> {
-            return this.sync().eval(script, outputType, keys.toArray(new String[keys.size()]), args.toArray());
-        });
+        return this.execute(() -> this.sync().eval(script, outputType, keys.toArray(new String[keys.size()]), args.toArray()));
     }
 
     @Override
