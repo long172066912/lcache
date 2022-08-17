@@ -1639,23 +1639,17 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Object eval(String script, ScriptOutputType outputType) {
-        return this.execute(() -> {
-            return this.sync().eval(script, outputType);
-        });
+        return this.execute(() -> this.sync().eval(script, outputType));
     }
 
     @Override
     public Object evalsha(String sha1, ScriptOutputType outputType) {
-        return this.execute(() -> {
-            return this.sync().evalsha(sha1, outputType);
-        });
+        return this.execute(() -> this.sync().evalsha(sha1, outputType));
     }
 
     @Override
     public Object evalsha(String sha1, ScriptOutputType outputType, List<String> keys, List<String> args) {
-        return this.execute(() -> {
-            return this.sync().evalsha(sha1, outputType, keys.toArray(new String[keys.size()]), args.toArray());
-        });
+        return this.execute(() -> this.sync().evalsha(sha1, outputType, keys.toArray(new String[keys.size()]), args.toArray()));
     }
 
     @Override
@@ -1670,9 +1664,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
                 keys[i >> 1] = params[i];
             }
         }
-        return this.execute(() -> {
-            return this.sync().evalsha(sha1, outputType, keys, values);
-        });
+        return this.execute(() -> this.sync().evalsha(sha1, outputType, keys, values));
     }
 
     @Override
@@ -1688,15 +1680,11 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public List<Boolean> scriptExists(String... sha1) {
-        return (List<Boolean>) this.execute(() -> {
-            return this.sync().scriptExists(sha1);
-        });
+        return (List<Boolean>) this.execute(() -> this.sync().scriptExists(sha1));
     }
 
     @Override
     public String scriptLoad(String script) {
-        return (String) this.execute(() -> {
-            return this.sync().scriptLoad(script);
-        });
+        return this.execute(() -> this.sync().scriptLoad(script));
     }
 }
