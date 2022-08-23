@@ -1,6 +1,6 @@
 package com.lcache.extend.handle.redis.lettuce.proxy;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.core.handle.AbstractCacheHandle;
 import com.lcache.exception.CacheExceptionFactory;
 import io.lettuce.core.cluster.api.async.RedisClusterAsyncCommands;

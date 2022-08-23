@@ -1,6 +1,6 @@
 package com.lcache.core.cache.localcache;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.core.BaseCacheExecutor;
 import com.lcache.core.model.HotKeySubscriptData;
 import com.lcache.core.monitor.MonitorFactory;

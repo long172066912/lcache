@@ -1,6 +1,6 @@
 package com.lcache.connect;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.config.InterfaceCacheConfig;
 import com.lcache.core.constant.RedisClientConstants;
 import com.lcache.core.model.CacheConfigModel;

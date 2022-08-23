@@ -15,8 +15,7 @@ dependencies {
     compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.8.8'
     compile group: 'org.redisson', name: 'redisson', version: '3.15.0'
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.68.Final'
-    implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.79'
-//    implementation group: 'org.mongodb', name: 'mongodb-driver', version: '3.2.2'
+    implementation group: 'com.alibaba.fastjson2', name: 'fastjson2', version: '2.0.12'
 }
 
 test.enabled = false

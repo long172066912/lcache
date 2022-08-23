@@ -1,6 +1,6 @@
 package com.lcache.extend.handle.monitor.hotkey.util;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.core.cache.annotations.CommandsDataTypeUtil;
 import com.lcache.executor.CacheExecutorFactory;
 import com.lcache.extend.handle.monitor.hotkey.model.HotKeyItem;

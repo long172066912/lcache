@@ -1,6 +1,6 @@
 package com.lcache.core.handle;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.core.BaseCacheExecutor;
 import com.lcache.core.cache.annotations.CommandsDataTypeUtil;
 import com.lcache.core.cache.localcache.AbstractLocalCacheHandle;

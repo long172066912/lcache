@@ -1,6 +1,6 @@
 package com.lcache.extend.handle.redis.lettuce.commands;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lcache.core.cache.redis.lua.RedisLuaScripts;
 import com.lcache.core.constant.RedisMagicConstants;
 import com.lcache.core.model.InterfacePubSubModel;
