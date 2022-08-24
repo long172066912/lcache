@@ -1,9 +1,9 @@
 package com.lcache.extend.handle.redis.lettuce.pipeline;
 
-import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.pipeline.*;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.RedisFuture;
 import io.lettuce.core.cluster.api.async.RedisClusterAsyncCommands;
 
@@ -138,7 +138,7 @@ public class LettucePipelineExecutor {
                         futures.add(pipeline.zrevrange(((PipelineZrevRange) pipelineCmd).getKey(), ((PipelineZrevRange) pipelineCmd).getStartIndex(), ((PipelineZrevRange) pipelineCmd).getEndIndex()));
                         break;
                     default:
-                        CacheExceptionFactory.addErrorLog("Error pipeline cmd: " + JSON.toJSONString(pipelineCmd));
+                        CacheExceptionFactory.addErrorLog("Error pipeline cmd: " + JsonUtil.toJSONString(pipelineCmd));
                 }
             }
             pipeline.flushCommands();

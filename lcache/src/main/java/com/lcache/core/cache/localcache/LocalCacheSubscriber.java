@@ -1,10 +1,10 @@
 package com.lcache.core.cache.localcache;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.BaseCacheExecutor;
 import com.lcache.core.model.HotKeySubscriptData;
 import com.lcache.core.monitor.MonitorFactory;
 import com.lcache.util.CacheConfigUtils;
+import com.lcache.util.JsonUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +27,7 @@ public class LocalCacheSubscriber {
      */
     public static void addSubscriber(BaseCacheExecutor executor) {
         subscribeInfo.computeIfAbsent(CacheConfigUtils.modelToHashKeyNoUseType(executor.getCacheConfigModel()), e -> {
-            executor.subscribe((message) -> manageMessage(JSON.parseObject(message, HotKeySubscriptData.class)), RedisLocalCacheFactory.LOCAL_CACHE_KEY_PUBSUB_CHANNEL + executor.getCacheConfigModel().getCacheType());
+            executor.subscribe((message) -> manageMessage(JsonUtil.parseObject(message, HotKeySubscriptData.class)), RedisLocalCacheFactory.LOCAL_CACHE_KEY_PUBSUB_CHANNEL + executor.getCacheConfigModel().getCacheType());
             return 1;
         });
     }

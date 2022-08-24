@@ -1,8 +1,8 @@
 package com.lcache.extend.handle.redis.jedis.pipeline;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.pipeline.*;
+import com.lcache.util.JsonUtil;
 import redis.clients.jedis.Pipeline;
 
 import java.io.IOException;
@@ -137,7 +137,7 @@ public class JedisPipelineExecutor {
                         pipeline.zrevrange(((PipelineZrevRange) pipelineCmd).getKey(), ((PipelineZrevRange) pipelineCmd).getStartIndex(), ((PipelineZrevRange) pipelineCmd).getEndIndex());
                         break;
                     default:
-                        CacheExceptionFactory.addErrorLog("Error pipeline cmd: " + JSON.toJSONString(pipelineCmd));
+                        CacheExceptionFactory.addErrorLog("Error pipeline cmd: " + JsonUtil.toJSONString(pipelineCmd));
                 }
             }
             return pipeline.syncAndReturnAll();

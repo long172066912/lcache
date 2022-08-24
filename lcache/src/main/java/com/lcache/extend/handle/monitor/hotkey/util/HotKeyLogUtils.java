@@ -1,10 +1,10 @@
 package com.lcache.extend.handle.monitor.hotkey.util;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.cache.annotations.CommandsDataTypeUtil;
 import com.lcache.executor.CacheExecutorFactory;
 import com.lcache.extend.handle.monitor.hotkey.model.HotKeyItem;
 import com.lcache.extend.handle.monitor.hotkey.model.HotKeyWriterModel;
+import com.lcache.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class HotKeyLogUtils {
      * @param hotkey
      */
     public static void apendHotkeys(String cacheType, HotKeyItem hotkey) {
-        apendFile(JSON.toJSONString(
+        apendFile(JsonUtil.toJSONString(
                 new HotKeyWriterModel(
                         CacheExecutorFactory.getDefaultHost(cacheType),
                         SERVER_NAME,

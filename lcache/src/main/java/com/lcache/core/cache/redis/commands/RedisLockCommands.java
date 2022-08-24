@@ -4,11 +4,7 @@ import com.lcache.core.cache.LcacheCommands;
 import com.lcache.core.cache.annotations.CommandsDataType;
 import com.lcache.core.cache.redis.model.LLock;
 import com.lcache.core.constant.CommandsDataTypeEnum;
-import com.lcache.core.handle.AbstractCacheHandle;
-import com.lcache.exception.CacheExceptionFactory;
-import org.redisson.api.RLock;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**

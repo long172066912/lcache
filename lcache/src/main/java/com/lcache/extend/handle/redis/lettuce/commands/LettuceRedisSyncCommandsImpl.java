@@ -1,12 +1,12 @@
 package com.lcache.extend.handle.redis.lettuce.commands;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.cache.redis.lua.RedisLuaScripts;
 import com.lcache.core.constant.RedisMagicConstants;
 import com.lcache.core.model.InterfacePubSubModel;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.lettuce.AbstractLettuceHandleExecutor;
 import com.lcache.util.CacheCommonUtils;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.*;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -645,7 +645,7 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public Map<String, Double> zscoreBatch(String key, List<String> members) {
-        return JSON.parseObject(this.execute(() -> this.sync().evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), ScriptOutputType.VALUE, new String[]{key}, members.toArray()), key).toString(), Map.class);
+        return JsonUtil.parseObject(this.execute(() -> this.sync().evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), ScriptOutputType.VALUE, new String[]{key}, members.toArray()), key).toString(), Map.class);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.lcache.extend.handle.processor;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
 import com.lcache.core.constant.RedisClientConstants;
 import com.lcache.core.constant.UseTypeEnum;
@@ -9,6 +8,7 @@ import com.lcache.core.processor.AbstractHandlePostProcessor;
 import com.lcache.core.processor.factory.HandlePostFactory;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.util.CacheFunction;
+import com.lcache.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +89,7 @@ public class JedisPubSubPostProcessor extends AbstractHandlePostProcessor {
                 Thread.sleep(retryTime);
             } catch (InterruptedException e) {
             }
-            LOGGER.info("Jedis subscribe retry ! CacheConfigModel:[{}]", JSON.toJSONString(cacheHandleProcessorModel.getCacheConfigModel()));
+            LOGGER.info("Jedis subscribe retry ! CacheConfigModel:[{}]", JsonUtil.toJSONString(cacheHandleProcessorModel.getCacheConfigModel()));
             try {
                 function.apply();
             } catch (Exception e) {

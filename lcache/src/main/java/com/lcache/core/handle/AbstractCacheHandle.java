@@ -1,11 +1,10 @@
 package com.lcache.core.handle;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.BaseCacheExecutor;
 import com.lcache.core.cache.annotations.CommandsDataTypeUtil;
 import com.lcache.core.cache.localcache.AbstractLocalCacheHandle;
-import com.lcache.core.cache.localcache.RedisLocalCacheFactory;
 import com.lcache.core.cache.localcache.LcacheCaffeineLocalCache;
+import com.lcache.core.cache.localcache.RedisLocalCacheFactory;
 import com.lcache.core.cache.redis.lua.RedisLuaInterface;
 import com.lcache.core.cache.redis.model.LLock;
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
@@ -17,6 +16,7 @@ import com.lcache.exception.CacheException;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.util.BeanFactory;
 import com.lcache.util.CacheFunction;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.ScriptOutputType;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
@@ -250,7 +250,7 @@ public abstract class AbstractCacheHandle extends BaseCacheExecutor implements I
                 return cacheDataBuilder.getCacheGetFunction().apply(this);
             }
         } catch (CacheException e) {
-            CacheExceptionFactory.addErrorLog("AbstractCacheHandle", "getCacheData", "test:[{}]", e, JSON.toJSONString(cacheDataBuilder));
+            CacheExceptionFactory.addErrorLog("AbstractCacheHandle", "getCacheData", "test:[{}]", e, JsonUtil.toJSONString(cacheDataBuilder));
             //redis异常从数据库拿
             if (null != data) {
                 return data;

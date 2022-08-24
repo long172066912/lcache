@@ -1,6 +1,5 @@
 package com.lcache.connect;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.config.InterfaceCacheConfig;
 import com.lcache.core.constant.RedisClientConstants;
 import com.lcache.core.model.CacheConfigModel;
@@ -8,6 +7,7 @@ import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.jedis.connect.JedisConnectionFactory;
 import com.lcache.extend.handle.redis.lettuce.connect.LettuceConnectionFactory;
 import com.lcache.util.CacheConfigUtils;
+import com.lcache.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class RedisConnectionManager {
                     connection.getResource().close();
                     //重新获取连接
                     getConnectionResourceByCacheConfigModel(cacheConfigModel, (InterfaceCacheConfig) redisSourceConfig, connection);
-                    LOGGER.info("RedisConnectionManager->resetConnectionResource end ! cacheConfigModel:[{}]", JSON.toJSONString(cacheConfigModel));
+                    LOGGER.info("RedisConnectionManager->resetConnectionResource end ! cacheConfigModel:[{}]", JsonUtil.toJSONString(cacheConfigModel));
                 } catch (Exception e) {
                     CacheExceptionFactory.addErrorLog("RedisConnectionManager->resetConnectionResource reset error ！", e);
                 } finally {

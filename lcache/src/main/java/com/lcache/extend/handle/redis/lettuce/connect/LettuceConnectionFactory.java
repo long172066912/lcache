@@ -1,6 +1,5 @@
 package com.lcache.extend.handle.redis.lettuce.connect;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.config.InterfaceCacheConfig;
 import com.lcache.connect.InterfaceConnectFactory;
 import com.lcache.core.constant.RedisClientConstants;
@@ -11,6 +10,7 @@ import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceClusterConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
 import com.lcache.util.CacheConfigBuildUtils;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -71,7 +71,7 @@ public class LettuceConnectionFactory extends AbstractConnectHandle implements I
                     return null;
             }
         } catch (Exception e) {
-            CacheExceptionFactory.throwException(CacheExceptionConstants.CACHE_ERROR_CODE, "RedisConnectionManager->getLettuceConnectionResource", JSON.toJSONString(cacheConfigModel), e);
+            CacheExceptionFactory.throwException(CacheExceptionConstants.CACHE_ERROR_CODE, "RedisConnectionManager->getLettuceConnectionResource", JsonUtil.toJSONString(cacheConfigModel), e);
             return null;
         }
     }

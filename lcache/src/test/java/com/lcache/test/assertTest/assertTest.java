@@ -1,6 +1,5 @@
 package com.lcache.test.assertTest;
 
-import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.ImmutableMap;
 import com.lcache.client.CacheClientFactory;
 import com.lcache.core.BaseCacheExecutor;
@@ -11,6 +10,7 @@ import com.lcache.core.model.CacheConfigModel;
 import com.lcache.core.model.CacheDataBuilder;
 import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.BitFieldArgs;
 import io.lettuce.core.ScriptOutputType;
 import io.lettuce.core.SortArgs;
@@ -492,8 +492,8 @@ public class assertTest {
         assertEquals(jedis.geopos("jgeo", "a", "b"), lettuce.geopos("lgeo", "a", "b"));
         assertEquals(jedis.geopos("null", "a", "b"), lettuce.geopos("null", "a", "b"));
         GeoRadiusParam param = GeoRadiusParam.geoRadiusParam().withDist().count(10).sortDescending();
-        assertEquals(JSON.toJSONString(jedis.georadius("jgeo", 15, 15, 5, GeoUnit.KM, param)), JSON.toJSONString(lettuce.georadius("lgeo", 15, 15, 5, GeoUnit.KM, param)));
-        assertEquals(JSON.toJSONString(jedis.georadiusByMember("jgeo", "c", 5, GeoUnit.KM, param)), JSON.toJSONString(lettuce.georadiusByMember("lgeo", "c", 5, GeoUnit.KM, param)));
+        assertEquals(JsonUtil.toJSONString(jedis.georadius("jgeo", 15, 15, 5, GeoUnit.KM, param)), JsonUtil.toJSONString(lettuce.georadius("lgeo", 15, 15, 5, GeoUnit.KM, param)));
+        assertEquals(JsonUtil.toJSONString(jedis.georadiusByMember("jgeo", "c", 5, GeoUnit.KM, param)), JsonUtil.toJSONString(lettuce.georadiusByMember("lgeo", "c", 5, GeoUnit.KM, param)));
         lettuce.del("jgeo");
         lettuce.del("lgeo");
         System.out.println("geo 通过 !");

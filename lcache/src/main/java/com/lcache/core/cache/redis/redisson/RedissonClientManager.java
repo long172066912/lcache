@@ -1,6 +1,5 @@
 package com.lcache.core.cache.redis.redisson;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.config.BaseCacheConfig;
 import com.lcache.core.constant.RedisClientConstants;
 import com.lcache.core.model.CacheConfigModel;
@@ -10,6 +9,7 @@ import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceClusterConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
 import com.lcache.util.CacheConfigUtils;
+import com.lcache.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -67,7 +67,7 @@ public class RedissonClientManager {
         }
         Config config = getConfig(cacheConfigModel, cacheConfig);
         if (null == config) {
-            CacheExceptionFactory.throwException("RedissonClientManager->getConfig error ! config is null !,cacheConfigModel:[{}],cacheConfig:[{}]", cacheConfigModel.toString() + JSON.toJSONString(cacheConfig));
+            CacheExceptionFactory.throwException("RedissonClientManager->getConfig error ! config is null !,cacheConfigModel:[{}],cacheConfig:[{}]", cacheConfigModel.toString() + JsonUtil.toJSONString(cacheConfig));
         }
         //设置线程数
         config.setThreads(REDISSON_THREAD_NUM);

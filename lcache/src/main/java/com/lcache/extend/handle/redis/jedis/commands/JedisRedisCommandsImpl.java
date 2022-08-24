@@ -1,6 +1,5 @@
 package com.lcache.extend.handle.redis.jedis.commands;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.cache.redis.lua.RedisLuaScripts;
 import com.lcache.core.constant.RedisMagicConstants;
 import com.lcache.core.constant.UseTypeEnum;
@@ -8,6 +7,7 @@ import com.lcache.core.model.InterfacePubSubModel;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.jedis.AbstractJedisHandleExecutor;
 import com.lcache.util.CacheCommonUtils;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.*;
 import org.apache.commons.collections4.CollectionUtils;
 import redis.clients.jedis.*;
@@ -728,7 +728,7 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
 
     @Override
     public Map<String, Double> zscoreBatch(String key, List<String> members) {
-        return JSON.parseObject(this.execute(() -> this.evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), ScriptOutputType.VALUE, Arrays.asList(key), members), key).toString(), Map.class);
+        return JsonUtil.parseObject(this.execute(() -> this.evalsha(this.getLuaSha1(RedisLuaScripts.ZSCORE_BATCH), ScriptOutputType.VALUE, Arrays.asList(key), members), key).toString(), Map.class);
     }
 
     @Override

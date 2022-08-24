@@ -1,6 +1,5 @@
 package com.lcache.extend.handle.redis.jedis.connect;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.config.InterfaceCacheConfig;
 import com.lcache.connect.InterfaceConnectFactory;
 import com.lcache.core.constant.RedisClientConstants;
@@ -12,6 +11,7 @@ import com.lcache.extend.handle.redis.jedis.config.JedisClusterConnectSourceConf
 import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.jedis.config.JedisShardConnectSourceConfig;
 import com.lcache.util.CacheConfigBuildUtils;
+import com.lcache.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
@@ -57,7 +57,7 @@ public class JedisConnectionFactory extends AbstractConnectHandle implements Int
                     return null;
             }
         } catch (Exception e) {
-            CacheExceptionFactory.throwException(CacheExceptionConstants.CACHE_ERROR_CODE, "RedisConnectionManager->getJedisConnectionResource", JSON.toJSONString(cacheConfigModel), e);
+            CacheExceptionFactory.throwException(CacheExceptionConstants.CACHE_ERROR_CODE, "RedisConnectionManager->getJedisConnectionResource", JsonUtil.toJSONString(cacheConfigModel), e);
             return null;
         }
     }

@@ -5,10 +5,8 @@ import com.lcache.core.cache.annotations.CommandsDataType;
 import com.lcache.core.constant.CommandsDataTypeEnum;
 import com.lcache.core.constant.LocalCacheHandleTypeEnum;
 import com.lcache.core.model.CacheDataBuilder;
-import org.redisson.api.RLock;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**

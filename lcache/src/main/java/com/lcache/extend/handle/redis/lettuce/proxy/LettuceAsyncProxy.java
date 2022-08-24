@@ -1,8 +1,8 @@
 package com.lcache.extend.handle.redis.lettuce.proxy;
 
-import com.alibaba.fastjson2.JSON;
 import com.lcache.core.handle.AbstractCacheHandle;
 import com.lcache.exception.CacheExceptionFactory;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.cluster.api.async.RedisClusterAsyncCommands;
 
 import java.lang.reflect.InvocationHandler;
@@ -35,7 +35,7 @@ public class LettuceAsyncProxy implements InvocationHandler {
             try {
                 return method.invoke(redisAsyncCommands, args);
             } catch (Exception e) {
-                CacheExceptionFactory.addErrorLog("LettuceAsyncProxy asyncL invoke error ! args:{}", JSON.toJSONString(args), e);
+                CacheExceptionFactory.addErrorLog("LettuceAsyncProxy asyncL invoke error ! args:{}", JsonUtil.toJSONString(args), e);
             }
             return null;
         });

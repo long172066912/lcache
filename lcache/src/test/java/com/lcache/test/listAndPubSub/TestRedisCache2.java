@@ -1,6 +1,5 @@
 package com.lcache.test.listAndPubSub;
 
-import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.ImmutableMap;
 import com.lcache.client.CacheClientFactory;
 import com.lcache.core.BaseCacheExecutor;
@@ -12,6 +11,7 @@ import com.lcache.extend.handle.pipeline.PipelineGet;
 import com.lcache.extend.handle.pipeline.PipelineZremRangeByScore;
 import com.lcache.extend.handle.redis.jedis.config.JedisConnectSourceConfig;
 import com.lcache.extend.handle.redis.lettuce.config.LettuceConnectSourceConfig;
+import com.lcache.util.JsonUtil;
 import io.lettuce.core.api.StatefulConnection;
 import org.junit.Test;
 import org.redisson.api.RScoredSortedSet;
@@ -261,7 +261,7 @@ public class TestRedisCache2 {
         commands.add(new PipelineZremRangeByScore("test111", 0, System.currentTimeMillis()));
         //同步方式
         List<Object> resList = baseCacheExecutor.pSync(commands);
-        System.out.println(JSON.toJSONString(resList));
+        System.out.println(JsonUtil.toJSONString(resList));
         //异步方式
         CompletableFuture<List<Object>> listCompletableFuture = baseCacheExecutor.pAsync(commands);
 //        }
@@ -296,7 +296,7 @@ public class TestRedisCache2 {
         List<String> strings = Arrays.asList("a", "b", "d");
         RScoredSortedSet<String> scoredSortedSet = redissonClient.getScoredSortedSet(zsetKey, StringCodec.INSTANCE);
         List<Double> score = scoredSortedSet.getScore(strings);
-        System.out.println(JSON.toJSONString(score.stream().filter(e -> null != e).map(e -> e.toString()).collect(Collectors.toList())));
+        System.out.println(JsonUtil.toJSONString(score.stream().filter(e -> null != e).map(e -> e.toString()).collect(Collectors.toList())));
     }
 
     @Test
@@ -311,7 +311,7 @@ public class TestRedisCache2 {
                     jedis.zadd(jzsetKey, ImmutableMap.of("a", (double) 1, "b", (double) 2, "c", (double) 3), 3600);
                     jedis.zaddIfKeyExists(jzsetKey, 4, "e", 3600);
                     Map<String, Double> score = jedis.zscoreBatch(jzsetKey, Arrays.asList("a", "b", "c", "e"));
-                    System.out.println("jedis : " + JSON.toJSONString(score));
+                    System.out.println("jedis : " + JsonUtil.toJSONString(score));
                     Thread.sleep(500L);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -328,7 +328,7 @@ public class TestRedisCache2 {
                 baseCacheExecutor.zadd(zsetKey, ImmutableMap.of("a", (double) 1, "b", (double) 2, "c", (double) 3), 3600);
                 baseCacheExecutor.zaddIfKeyExists(zsetKey, 4, "e", 3600);
                 Map<String, Double> score = baseCacheExecutor.zscoreBatch(zsetKey, Arrays.asList("a", "b", "c", "e"));
-                System.out.println("lettuce : " + JSON.toJSONString(score));
+                System.out.println("lettuce : " + JsonUtil.toJSONString(score));
                 Thread.sleep(500L);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -344,7 +344,7 @@ public class TestRedisCache2 {
         try {
             String s = baseCacheExecutor.async().expireBatch(30, "a", "b").get();
             System.out.println(s);
-            Map<String, Boolean> res = JSON.parseObject(s, Map.class);
+            Map<String, Boolean> res = JsonUtil.parseObject(s, Map.class);
             System.out.println(res.get("a"));
             System.out.println(baseCacheExecutor.ttl("a"));
             System.out.println(baseCacheExecutor.ttl("b"));
