@@ -1,0 +1,3 @@
+com.lcache.extend.handle.processor.JedisHandlesPostProcessor
+com.lcache.extend.handle.processor.JedisPubSubPostProcessor
+com.lcache.extend.handle.processor.LettuceHandlesPostProcessor

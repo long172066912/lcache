@@ -3,6 +3,7 @@ package com.lcache.core.processor.factory;
 
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
 import com.lcache.core.processor.AbstractHandlePostProcessor;
+import com.lcache.core.processor.InterfaceHandlePostProcessor;
 import com.lcache.extend.handle.processor.JedisHandlesPostProcessor;
 import com.lcache.extend.handle.processor.JedisPubSubPostProcessor;
 import com.lcache.extend.handle.processor.LettuceHandlesPostProcessor;
@@ -35,13 +36,9 @@ public class HandlePostFactory {
      */
     private final static String SPACE_MARK = "_";
 
-    static {
-        //增加Jedis与Lettuce的默认实现
-        //缓存操作
-        addBeanPostProcessor(BeanFactory.get(LettuceHandlesPostProcessor.class));
-        addBeanPostProcessor(BeanFactory.get(JedisHandlesPostProcessor.class));
-        //发布订阅
-        addBeanPostProcessor(BeanFactory.get(JedisPubSubPostProcessor.class));
+    public HandlePostFactory() {
+        ServiceLoader<AbstractHandlePostProcessor> processors = ServiceLoader.load(AbstractHandlePostProcessor.class);
+        processors.forEach(processor-> addBeanPostProcessor(BeanFactory.get(processor.getClass())));
     }
 
     /**
