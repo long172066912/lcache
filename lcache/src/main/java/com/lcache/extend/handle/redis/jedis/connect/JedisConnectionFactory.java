@@ -25,7 +25,7 @@ import redis.clients.jedis.ShardedJedis;
  * @Description: Jedis连接工厂
  * @date 2021/1/27 5:15 PM
  */
-public class JedisConnectionFactory extends AbstractConnectHandle implements InterfaceConnectFactory {
+public class JedisConnectionFactory extends AbstractConnectHandle {
 
     @Override
     public int getClientType() {

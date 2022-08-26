@@ -2,16 +2,19 @@ package com.lcache.connect;
 
 import com.lcache.config.InterfaceCacheConfig;
 import com.lcache.core.constant.RedisClientConstants;
+import com.lcache.core.handle.AbstractConnectHandle;
 import com.lcache.core.model.CacheConfigModel;
 import com.lcache.exception.CacheExceptionFactory;
 import com.lcache.extend.handle.redis.jedis.connect.JedisConnectionFactory;
 import com.lcache.extend.handle.redis.lettuce.connect.LettuceConnectionFactory;
+import com.lcache.util.BeanFactory;
 import com.lcache.util.CacheConfigUtils;
 import com.lcache.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,12 +34,10 @@ public class RedisConnectionManager {
     /**
      * 不同连接方式的配置实现管理
      */
-    private static Map<Integer, Class<? extends InterfaceConnectFactory>> clientTypeSupports = new ConcurrentHashMap<>();
+    private static Map<Integer, AbstractConnectHandle> clientTypeSupports = new ConcurrentHashMap<>();
 
     static {
-        //默认注入2个实现，支持非spring方式
-        regist(RedisClientConstants.JEDIS, JedisConnectionFactory.class);
-        regist(RedisClientConstants.LETTUCE, LettuceConnectionFactory.class);
+        ServiceLoader.load(AbstractConnectHandle.class).forEach(connectHandle-> regist(connectHandle.getClientType(), BeanFactory.get(connectHandle.getClass())));
     }
 
     /**
@@ -45,7 +46,7 @@ public class RedisConnectionManager {
      * @param clientType
      * @param cls
      */
-    public static void regist(int clientType, Class<? extends InterfaceConnectFactory> cls) {
+    public static void regist(int clientType, AbstractConnectHandle cls) {
         clientTypeSupports.put(clientType, cls);
     }
 
@@ -114,7 +115,7 @@ public class RedisConnectionManager {
             connectResource = new ConnectResource();
         }
         try {
-            return connectResource.setConnectResource(clientTypeSupports.get(cacheConfigModel.getClientType()).newInstance().getConnectionResource(redisSourceConfig, cacheConfigModel));
+            return connectResource.setConnectResource(clientTypeSupports.get(cacheConfigModel.getClientType()).getConnectionResource(redisSourceConfig, cacheConfigModel));
         } catch (Exception ex) {
             CacheExceptionFactory.throwException("创建连接资源失败！", ex);
             return null;

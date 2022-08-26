@@ -1,6 +1,7 @@
 package com.lcache.core.handle;
 
 
+import com.lcache.connect.InterfaceConnectFactory;
 import com.lcache.core.constant.HandlePostProcessorTypeEnum;
 import com.lcache.core.converters.PostProcessorConvertersAndExecutor;
 import com.lcache.core.model.CacheHandleProcessorModel;
@@ -17,7 +18,7 @@ import java.util.List;
  * @Description: 连接执行器
  * @date 2021/1/18 3:20 PM
  */
-public abstract class AbstractConnectHandle implements InterfaceCommomHandle {
+public abstract class AbstractConnectHandle implements InterfaceCommomHandle, InterfaceConnectFactory {
 
     protected PostProcessorConvertersAndExecutor postProcessorConverters = BeanFactory.get(PostProcessorConvertersAndExecutor.class);
 

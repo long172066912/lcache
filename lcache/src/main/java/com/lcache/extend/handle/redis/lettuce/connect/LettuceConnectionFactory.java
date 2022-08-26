@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description: Lettuce连接工厂
  * @date 2021/1/27 5:15 PM
  */
-public class LettuceConnectionFactory extends AbstractConnectHandle implements InterfaceConnectFactory {
+public class LettuceConnectionFactory extends AbstractConnectHandle {
 
 
     @Override

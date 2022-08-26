@@ -1,0 +1,2 @@
+com.lcache.extend.handle.redis.jedis.connect.JedisConnectionFactory
+com.lcache.extend.handle.redis.lettuce.connect.LettuceConnectionFactory
