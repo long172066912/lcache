@@ -12,6 +12,7 @@ import com.lcache.extend.handle.monitor.CacheTimerMonitorConsumer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -42,10 +43,7 @@ public class MonitorFactory {
     protected static final int QUEUE_MONITOR_SIZE = 10000;
 
     static {
-        //非spring项目需要主动注入2个监控器
-        MONITOR_MAP.put(MonitorTypeEnum.TIMER, new CacheTimerMonitorConsumer());
-        MONITOR_MAP.put(MonitorTypeEnum.COUNT, new CacheCounterMonitorConsumer());
-        MONITOR_MAP.put(MonitorTypeEnum.HOTKEY, new CacheHotKeyMonitorConsumer());
+        ServiceLoader.load(AbstractCacheMonitorConsumer.class).forEach(consumer-> MONITOR_MAP.put(consumer.getType(), consumer));
     }
 
     /**
