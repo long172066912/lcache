@@ -1,4 +1,4 @@
-package com.lcache.spring;
+package com.lcache.spring.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 

@@ -2,8 +2,8 @@ package com.lcache.test.springCache;
 
 import com.google.common.collect.ImmutableMap;
 import com.lcache.core.BaseCacheExecutor;
-import com.lcache.spring.Lcache;
-import com.lcache.spring.LcacheRedissonCache;
+import com.lcache.spring.annotation.Lcache;
+import com.lcache.spring.manager.LcacheRedissonCache;
 import com.lcache.test.CacheBaseTest;
 import com.lcache.test.springCache.service.SpringCacheEvictTestService;
 import com.lcache.test.springCache.service.SpringCacheGetTestService;
@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.Map;
 

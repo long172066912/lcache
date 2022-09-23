@@ -6,6 +6,8 @@ apply plugin: 'java'
 // 定义自己的依赖
 dependencies {
     compile project(":lcache")
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.0.2.RELEASE'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'org.springframework', name: 'spring-context', version: '5.3.14'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.0.2.RELEASE'

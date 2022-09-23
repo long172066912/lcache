@@ -1,4 +1,4 @@
-package com.lcache.spring;
+package com.lcache.spring.manager;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.AliasFor;

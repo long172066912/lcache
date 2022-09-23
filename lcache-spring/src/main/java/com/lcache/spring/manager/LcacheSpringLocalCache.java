@@ -1,4 +1,4 @@
-package com.lcache.spring;
+package com.lcache.spring.manager;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.lcache.exception.CacheExceptionFactory;

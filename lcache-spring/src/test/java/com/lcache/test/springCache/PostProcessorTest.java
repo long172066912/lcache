@@ -1,7 +1,7 @@
 package com.lcache.test.springCache;
 
 import com.lcache.core.BaseCacheExecutor;
-import com.lcache.spring.Lcache;
+import com.lcache.spring.annotation.Lcache;
 import com.lcache.test.CacheBaseTest;
 import org.junit.Test;
 

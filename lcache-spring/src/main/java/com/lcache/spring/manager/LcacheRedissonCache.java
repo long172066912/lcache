@@ -1,4 +1,4 @@
-package com.lcache.spring;
+package com.lcache.spring.manager;
 
 import com.lcache.client.CacheClientFactory;
 import com.lcache.core.BaseCacheExecutor;

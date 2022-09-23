@@ -1,7 +1,7 @@
 package com.lcache.test.springCache;
 
 import com.google.common.collect.ImmutableMap;
-import com.lcache.spring.LcacheSpringLocalCache;
+import com.lcache.spring.manager.LcacheSpringLocalCache;
 import com.lcache.test.CacheBaseTest;
 import com.lcache.test.springCache.local.LocalCacheEvictTestService;
 import com.lcache.test.springCache.local.LocalCacheGetTestService;

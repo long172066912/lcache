@@ -1,7 +1,7 @@
 package com.lcache.test.springCache.local;
 
-import com.lcache.spring.LcacheLocalCacheEvict;
-import com.lcache.spring.LcacheManager;
+import com.lcache.spring.manager.LcacheLocalCacheEvict;
+import com.lcache.spring.manager.LcacheManager;
 import com.lcache.test.springCache.service.model.SpringCacheTestReq;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
