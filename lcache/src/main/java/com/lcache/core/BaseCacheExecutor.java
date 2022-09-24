@@ -5,7 +5,7 @@ import com.lcache.core.cache.localcache.RedisLocalCacheFactory;
 import com.lcache.core.cache.redis.commands.*;
 import com.lcache.core.cache.redis.lua.RedisLuaInterface;
 import com.lcache.core.cache.redis.lua.RedisLuaScripts;
-import com.lcache.core.cache.redis.redisson.RedissonClientManager;
+import com.lcache.extend.handle.redis.redisson.RedissonClientManager;
 import com.lcache.core.model.CacheConfigModel;
 import com.lcache.core.monitor.MonitorConfig;
 import com.lcache.core.monitor.MonitorFactory;

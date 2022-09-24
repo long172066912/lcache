@@ -1,4 +1,4 @@
-package com.lcache.core.cache.redis.redisson;
+package com.lcache.extend.handle.redis.redisson;
 
 import com.lcache.config.BaseCacheConfig;
 import com.lcache.core.constant.RedisClientConstants;
@@ -56,26 +56,29 @@ public class RedissonClientManager {
      * @param cacheConfig
      * @return
      */
-    public synchronized static RedissonClient getRedissonClient(CacheConfigModel cacheConfigModel, BaseCacheConfig cacheConfig) {
-        RedissonClient redissonClient = null;
+    public static RedissonClient getRedissonClient(CacheConfigModel cacheConfigModel, BaseCacheConfig cacheConfig) {
         String key = CacheConfigUtils.modelToHashKey(cacheConfigModel);
-        if (null != redissonMap.get(key)) {
+        RedissonClient redissonClient = redissonMap.get(key);
+        if (null != redissonClient && !redissonClient.isShutdown()) {
+            return redissonClient;
+        }
+        synchronized (RedissonClientManager.class) {
             redissonClient = redissonMap.get(key);
-            if (!redissonClient.isShutdown()) {
+            if (null != redissonClient && !redissonClient.isShutdown()) {
                 return redissonClient;
             }
+            Config config = getConfig(cacheConfigModel, cacheConfig);
+            if (null == config) {
+                CacheExceptionFactory.throwException("RedissonClientManager->getConfig error ! config is null !,cacheConfigModel:[{}],cacheConfig:[{}]", cacheConfigModel.toString() + JsonUtil.toJSONString(cacheConfig));
+            }
+            //设置线程数
+            config.setThreads(REDISSON_THREAD_NUM);
+            //设置Netty线程数
+            config.setNettyThreads(REDISSON_THREAD_NUM);
+            redissonClient = Redisson.create(config);
+            redissonMap.put(key, redissonClient);
+            return redissonClient;
         }
-        Config config = getConfig(cacheConfigModel, cacheConfig);
-        if (null == config) {
-            CacheExceptionFactory.throwException("RedissonClientManager->getConfig error ! config is null !,cacheConfigModel:[{}],cacheConfig:[{}]", cacheConfigModel.toString() + JsonUtil.toJSONString(cacheConfig));
-        }
-        //设置线程数
-        config.setThreads(REDISSON_THREAD_NUM);
-        //设置Netty线程数
-        config.setNettyThreads(REDISSON_THREAD_NUM);
-        redissonClient = Redisson.create(config);
-        redissonMap.put(key, redissonClient);
-        return redissonClient;
     }
 
     /**
