@@ -30,12 +30,7 @@ public class CacheCommonUtils {
      * @return
      */
     public static Map<String, Object> stringsToMap(String... keysvalues) {
-        if (keysvalues.length % RedisMagicConstants.TWO > 0) {
-            StringBuilder fields = new StringBuilder();
-            for (String keysvalue : keysvalues) {
-                fields.append(keysvalue);
-            }
-            CacheExceptionFactory.throwException(" CacheCommonUtils->stringsToMap 参数错误" + fields.toString());
+        if (!checkStrings(keysvalues)) {
             return null;
         }
         Map<String, Object> map = new HashMap<>(keysvalues.length);
@@ -43,6 +38,29 @@ public class CacheCommonUtils {
             map.put(keysvalues[i], keysvalues[++i]);
         }
         return map;
+    }
+
+    public static Map<String, String> strings2Map(String... keysvalues) {
+        if (!checkStrings(keysvalues)) {
+            return null;
+        }
+        Map<String, String> map = new HashMap<>(keysvalues.length);
+        for (int i = 0; i < keysvalues.length; i++) {
+            map.put(keysvalues[i], keysvalues[++i]);
+        }
+        return map;
+    }
+
+    private static boolean checkStrings(String... keysvalues) {
+        if (keysvalues.length % RedisMagicConstants.TWO > 0) {
+            StringBuilder fields = new StringBuilder();
+            for (String keysvalue : keysvalues) {
+                fields.append(keysvalue);
+            }
+            CacheExceptionFactory.throwException(" CacheCommonUtils->stringsToMap 参数错误" + fields.toString());
+            return false;
+        }
+        return true;
     }
 
     /**

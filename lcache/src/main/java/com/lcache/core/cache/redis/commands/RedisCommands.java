@@ -177,6 +177,16 @@ public interface RedisCommands extends LcacheCommands {
     String mset(int seconds, String... keysvalues);
 
     /**
+     * mset , 请注意需要设置过期时间
+     *
+     * @param seconds
+     * @param keysvalues
+     * @return
+     */
+    @CommandsDataType(commands = "mset", localCacheHandleType = LocalCacheHandleTypeEnum.SET)
+    String mset(int seconds, Map<String, String> keysvalues);
+
+    /**
      * 同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。
      * 即使只有一个给定 key 已存在， MSETNX 也会拒绝执行所有给定 key 的设置操作。
      * MSETNX 是原子性的，因此它可以用作设置多个不同 key 表示不同字段(field)的唯一性逻辑对象(unique logic object)，所有字段要么全被设置，要么全不被设置。

@@ -145,6 +145,12 @@ public class JedisRedisCommandsImpl extends AbstractJedisHandleExecutor {
     }
 
     @Override
+    public String mset(int seconds, Map<String, String> keysvalues) {
+        CacheExceptionFactory.throwException("ShardedJedis->mset(Map<String, String> keysvalues) 暂不支持此命令");
+        return null;
+    }
+
+    @Override
     public Boolean msetnx(int seconds, String... keysvalues) {
         Map<String, Object> keyValues = CacheCommonUtils.stringsToMap(keysvalues);
         if (null == keyValues) {

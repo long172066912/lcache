@@ -125,7 +125,11 @@ public class LettuceRedisSyncCommandsImpl extends AbstractLettuceHandleExecutor 
 
     @Override
     public String mset(int seconds, String... keysvalues) {
-        Map<String, Object> keyValues = CacheCommonUtils.stringsToMap(keysvalues);
+        return this.mset(seconds, CacheCommonUtils.strings2Map(keysvalues));
+    }
+
+    @Override
+    public String mset(int seconds, Map<String, String> keyValues) {
         if (null == keyValues) {
             CacheExceptionFactory.throwException("Lettuce->mset 参数错误");
             return null;
