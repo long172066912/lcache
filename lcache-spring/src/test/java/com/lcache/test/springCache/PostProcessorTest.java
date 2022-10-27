@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PostProcessorTest extends CacheBaseTest {
 
-    @Lcache(cacheType = SPRING_CACHE_TYPE)
+    @Lcache(SPRING_CACHE_TYPE)
     private BaseCacheExecutor cacheExecutor;
 
     public static Integer CONNECT_BEFOR = 0;

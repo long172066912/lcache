@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: lcache-example
+
+lcache:
+  #开启，默认懒加载
+  enabled: true
+  # key为cacheType，value为Config
+  cacheTypes:
+    #默认DB方式
+    test1:
+      #使用锁，进行Redisson懒加载
+      useLock: true
+    #自定义连接，默认本地127.0.0.1
+    test2:
+      useLock: true
+      sourceType: CUSTOM #自定义方式
+    test3:
+      useLock: true
+      sourceType: APOLLO #自定义方式

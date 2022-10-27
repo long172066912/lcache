@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 public class SpringCacheTest extends CacheBaseTest {
 
-    @Lcache(cacheType = SPRING_CACHE_TYPE)
+    @Lcache(SPRING_CACHE_TYPE)
     private BaseCacheExecutor cacheExecutor;
 
     private LcacheRedissonCache lcache;

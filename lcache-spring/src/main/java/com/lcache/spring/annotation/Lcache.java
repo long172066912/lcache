@@ -15,11 +15,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Lcache {
-
     /**
-     * 通过cacheType区分连接实例
-     *
+     * cacheType
      * @return
      */
-    String cacheType() default "";
+    String value() default "";
 }

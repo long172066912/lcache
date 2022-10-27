@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProperty scope="context" name="loggerAppName" source="spring.application.name" defaultValue="default"/>
+    <springProperty scope="context" name="loggerRoot" source="logging.path" defaultValue="/opt/log"/>
+    <springProperty scope="context" name="logPattern" source="logging.pattern.file"
+                    defaultValue="%d{yyyy-MM-dd-HH:mm:ss},%d{SSS} -%X- %5level [%t] {%logger:%L} - %msg%n"/>
+
+    <!-- 日志文件路径+日期-->
+    <property name="LOG_DIR" value="${loggerRoot}/starter-example"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 日志文件 -->
+    <appender name="STDERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/example_service_stderr.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/example_service_stderr.log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/example_service_stdout.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/example_service_stdout.log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 日志other文件 -->
+    <appender name="DB-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/other/example_db_stdout.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/other/example_db_stdout.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="DATA_STATIS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/other/example_data_statis.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/other/example_data_statis.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="MS_CLIENT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/other/example_msclient_stdout.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/other/example_msclient_stdout.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="MONITOR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/other/example_monitor_stdout.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/other/example_monitor_stdout.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logPattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!-- per4j日志文件 -->
+    <appender name="PER4J-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/perf/cper4j.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/perf/cper4j.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DB-PER4J-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/perf/db-cper4j.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/perf/db-cper4j.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="COALESCING-STATISTICS" class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
+        <timeSlice>60000</timeSlice>
+        <appender-ref ref="PER4J-APPENDER"/>
+    </appender>
+
+    <appender name="DB-COALESCING-STATISTICS" class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
+        <timeSlice>60000</timeSlice>
+        <appender-ref ref="DB-PER4J-APPENDER"/>
+    </appender>
+
+
+
+    <!-- perf4j -->
+    <logger name="org.perf4j.TimingLogger" level="INFO" additivity="false">
+        <appender-ref ref="COALESCING-STATISTICS"/>
+    </logger>
+
+    <!-- 常规 -->
+    <logger name="com.lcache" level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+    </logger>
+
+    <logger name="com.lcache.db" level="INFO" additivity="false">
+        <appender-ref ref="DB-APPENDER"/>
+    </logger>
+
+    <logger name="data_statis" level="INFO" additivity="false">
+        <appender-ref ref="DATA_STATIS"/>
+    </logger>
+
+    <root level="INFO">
+        <springProfile name="local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+        <appender-ref ref="STDERR"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

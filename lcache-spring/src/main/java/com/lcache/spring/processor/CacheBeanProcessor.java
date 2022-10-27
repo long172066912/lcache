@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author JerryLong
  * @version V1.0
- * @Title: WbRedisBeanProcessor
+ * @Title: CacheBeanProcessor
  * @Description: 覆盖cache组件中的后置处理器
  * @date 2022/8/12 13:46
  */
@@ -59,11 +59,11 @@ public class CacheBeanProcessor implements BeanPostProcessor, BeanFactoryAware, 
                         continue;
                     }
                     Lcache annotation = field.getAnnotation(Lcache.class);
-                    String cacheTypeName = annotation.cacheType();
+                    String cacheTypeName = annotation.value();
                     BaseCacheExecutor baseCacheExecutor = null;
-                    final LcacheProperties wbCacheProperties = beanFactory.getBean(LcacheProperties.class);
-                    if (null != wbCacheProperties && null != wbCacheProperties.getCacheTypes() && wbCacheProperties.getCacheTypes().containsKey(cacheTypeName)) {
-                        baseCacheExecutor = this.createCacheExecutor(cacheTypeName, wbCacheProperties.getCacheTypes().get(cacheTypeName));
+                    final LcacheProperties lcacheProperties = beanFactory.getBean(LcacheProperties.class);
+                    if (null != lcacheProperties && null != lcacheProperties.getCacheTypes() && lcacheProperties.getCacheTypes().containsKey(cacheTypeName)) {
+                        baseCacheExecutor = this.createCacheExecutor(cacheTypeName, lcacheProperties.getCacheTypes().get(cacheTypeName));
                     } else {
                         baseCacheExecutor = this.createCacheExecutor(cacheTypeName, null);
                     }

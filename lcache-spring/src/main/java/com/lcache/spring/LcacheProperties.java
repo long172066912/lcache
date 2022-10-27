@@ -23,7 +23,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = LcacheProperties.PREFIX)
 public class LcacheProperties {
 
-    public static final String PREFIX = "wb.cache";
+    public static final String PREFIX = "lcache";
 
     /**
      * 是否开启
