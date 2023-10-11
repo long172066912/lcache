@@ -3,6 +3,13 @@ package com.redis.core;
 import com.redis.core.resp.*;
 import io.netty.buffer.ByteBuf;
 
+/**
+* @Title: Resp
+* @Description: 网上找的
+* @author JerryLong
+* @date 2023/10/11 15:18
+* @version V1.0
+*/
 public interface Resp {
 
     static void write(Resp resp, ByteBuf buffer) {
