@@ -1,8 +1,9 @@
 package com.redis.core;
 
-import com.redis.core.resp.RespArray;
-import com.redis.core.resp.RespInt;
-import com.redis.core.resp.SimpleString;
+import com.redis.handler.codec.Resp;
+import com.redis.handler.codec.resp.RespArray;
+import com.redis.handler.codec.resp.RespInt;
+import com.redis.handler.codec.resp.SimpleString;
 
 import java.util.Arrays;
 import java.util.Map;

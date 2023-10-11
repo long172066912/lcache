@@ -1,9 +1,9 @@
 package com.redis.utils;
 
-import com.redis.core.Resp;
-import com.redis.core.resp.BulkString;
-import com.redis.core.resp.RespInt;
-import com.redis.core.resp.SimpleString;
+import com.redis.handler.codec.Resp;
+import com.redis.handler.codec.resp.BulkString;
+import com.redis.handler.codec.resp.RespInt;
+import com.redis.handler.codec.resp.SimpleString;
 
 public class RespUtil {
 

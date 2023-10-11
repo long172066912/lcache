@@ -1,9 +1,9 @@
 package com.redis.core.impl;
 
 import com.redis.core.CommandType;
-import com.redis.core.Resp;
+import com.redis.handler.codec.Resp;
 import com.redis.core.command.RedisData;
-import com.redis.core.resp.RespArray;
+import com.redis.handler.codec.resp.RespArray;
 import com.redis.handler.CommandHandler;
 
 import java.util.Arrays;

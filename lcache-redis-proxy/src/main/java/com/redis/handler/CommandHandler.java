@@ -1,7 +1,7 @@
 package com.redis.handler;
 
 import com.redis.core.command.RedisData;
-import com.redis.core.Resp;
+import com.redis.handler.codec.Resp;
 
 public interface CommandHandler {
     /**

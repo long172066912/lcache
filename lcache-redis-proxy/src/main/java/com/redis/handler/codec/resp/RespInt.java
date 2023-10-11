@@ -1,6 +1,6 @@
-package com.redis.core.resp;
+package com.redis.handler.codec.resp;
 
-import com.redis.core.Resp;
+import com.redis.handler.codec.Resp;
 
 public class RespInt implements Resp {
     int value;

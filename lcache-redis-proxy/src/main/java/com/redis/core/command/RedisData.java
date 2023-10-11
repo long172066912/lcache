@@ -1,6 +1,6 @@
 package com.redis.core.command;
 
-import com.redis.core.Resp;
+import com.redis.handler.codec.Resp;
 
 import java.util.Arrays;
 

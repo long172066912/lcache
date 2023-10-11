@@ -1,6 +1,6 @@
-package com.redis.core.resp;
+package com.redis.handler.codec.resp;
 
-import com.redis.core.Resp;
+import com.redis.handler.codec.Resp;
 
 /**
  * 简单字符串
