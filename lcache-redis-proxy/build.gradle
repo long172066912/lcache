@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+group 'com.wanba'
+version '1.0-SNAPSHOT'
+
+// 定义自己的依赖
+dependencies {
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.68.Final'
+}
