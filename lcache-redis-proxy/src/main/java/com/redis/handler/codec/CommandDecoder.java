@@ -1,11 +1,11 @@
 package com.redis.handler.codec;
 
 import com.redis.core.Resp;
-import com.redis.core.command.RedisData;
 import com.redis.core.resp.BulkString;
 import com.redis.core.resp.Errors;
 import com.redis.core.resp.RespArray;
 import com.redis.core.resp.SimpleString;
+import com.redis.handler.RedisReq;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -27,7 +27,7 @@ public class CommandDecoder extends LengthFieldBasedFrameDecoder {
                 if (!(resp instanceof RespArray || resp instanceof SimpleString)) {
                     throw new IllegalStateException("客户端发送的命令应该只能是Resp Array 和 单行命令 类型");
                 }
-                RedisData redisData = null;
+                RedisReq redisData = null;
                 if (resp instanceof RespArray) {
                     redisData = getRedisData((RespArray) resp);
                 } else if (resp instanceof SimpleString) {
@@ -48,13 +48,13 @@ public class CommandDecoder extends LengthFieldBasedFrameDecoder {
         return null;
     }
 
-    public RedisData getRedisData(RespArray arrays) {
+    public RedisReq getRedisData(RespArray arrays) {
         Resp[] array = arrays.getArray();
         String commandName = ((BulkString) array[0]).getContent().toUtf8String().toLowerCase();
-        return new RedisData(commandName, array);
+        return new RedisReq(commandName, array);
     }
 
-    public RedisData getRedisData(SimpleString string) {
-        return new RedisData(string.getContent().toLowerCase(), null);
+    public RedisReq getRedisData(SimpleString string) {
+        return new RedisReq(string.getContent().toLowerCase(), null);
     }
 }

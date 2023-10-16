@@ -4,6 +4,8 @@ import com.redis.core.command.impl.CommonRedisCommandsImpl;
 import com.redis.core.command.impl.HashCommandsImpl;
 import com.redis.core.command.impl.StringCommandsImpl;
 import com.redis.core.resp.BulkString;
+import com.redis.core.resp.RespInt;
+import com.redis.core.resp.SimpleString;
 import com.redis.utils.RespUtil;
 
 import java.lang.reflect.Method;
@@ -15,6 +17,10 @@ public class RedisCommandHandlerFactory {
 
     private static Map<String, CommandModel> redisHandlerMap = new ConcurrentHashMap<>();
     private static Map<String, CommandArgResolver[]> argResolverMap = new ConcurrentHashMap<>();
+    private static CommandResResolver defaultResResolver = response -> (Resp) response;
+    private static CommandResResolver intResResolver = response -> new RespInt((int) response);
+    private static CommandResResolver voidResResolver = response -> SimpleString.OK;
+    private static CommandResResolver stringResResolver = response -> new SimpleString(null == response ? "" : response.toString());
 
     static {
         add(new CommonRedisCommandsImpl());
@@ -25,7 +31,6 @@ public class RedisCommandHandlerFactory {
     public static <T extends Command> void add(T commandHandler) {
         //循环类所有方法，写入table
         for (Method method : commandHandler.getClass().getMethods()) {
-            redisHandlerMap.put(method.getName(), new CommandModel(commandHandler, method));
             if (method.getParameters().length > 0) {
                 CommandArgResolver[] argResolvers = new CommandArgResolver[method.getParameters().length];
                 for (int i = 0; i < method.getParameters().length; i++) {
@@ -41,6 +46,18 @@ public class RedisCommandHandlerFactory {
                 }
                 argResolverMap.put(method.getName(), argResolvers);
             }
+            CommandResResolver resResolver;
+            if (Resp.class.isAssignableFrom(method.getReturnType())) {
+                resResolver = defaultResResolver;
+            } else if (Void.class.isAssignableFrom(method.getReturnType())) {
+                resResolver = voidResResolver;
+            } else if (Integer.class.isAssignableFrom(method.getReturnType()) || int.class.isAssignableFrom(method.getReturnType())) {
+                resResolver = intResResolver;
+            } else {
+                //其他一律按字符串处理
+                resResolver = stringResResolver;
+            }
+            redisHandlerMap.put(method.getName(), new CommandModel(commandHandler, method, resResolver));
         }
     }
 
@@ -65,8 +82,9 @@ public class RedisCommandHandlerFactory {
                     params[i - 1] = argResolvers[i - 1].resolver(args[i]);
                 }
             }
-            System.out.println("执行命令 : " + method + " ， 参数 ：" + params);
-            return (Resp) executor.getMethod().invoke(executor.getCommandHandler(), params);
+            final Object response = executor.getMethod().invoke(executor.getCommandHandler(), params);
+            System.out.println("执行命令 : " + method + " ， 参数 ：" + params.length + " , 结果 ：" + response);
+            return executor.getResResolver().resolver(response);
         } catch (Exception e) {
             e.printStackTrace();
             return BulkString.NullBulkString;
@@ -77,14 +95,19 @@ public class RedisCommandHandlerFactory {
         T resolver(Resp resp);
     }
 
+    public interface CommandResResolver {
+        Resp resolver(Object response);
+    }
 
     private static class CommandModel {
         private Command commandHandler;
         private Method method;
+        private CommandResResolver resResolver;
 
-        public CommandModel(Command commandHandler, Method method) {
+        public CommandModel(Command commandHandler, Method method, CommandResResolver resResolver) {
             this.commandHandler = commandHandler;
             this.method = method;
+            this.resResolver = resResolver;
         }
 
         public Command getCommandHandler() {
@@ -93,6 +116,10 @@ public class RedisCommandHandlerFactory {
 
         public Method getMethod() {
             return method;
+        }
+
+        public CommandResResolver getResResolver() {
+            return resResolver;
         }
     }
 }

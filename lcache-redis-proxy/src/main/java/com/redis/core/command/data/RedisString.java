@@ -2,7 +2,6 @@ package com.redis.core.command.data;
 
 import com.redis.core.command.RedisDataDict;
 
-
 public class RedisString extends RedisDataDict {
     private String v;
 

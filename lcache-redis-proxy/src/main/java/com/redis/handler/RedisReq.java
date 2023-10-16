@@ -1,14 +1,14 @@
-package com.redis.core.command;
+package com.redis.handler;
 
 import com.redis.core.Resp;
 
 import java.util.Arrays;
 
-public class RedisData {
+public class RedisReq {
     private final String commandName;
     private final Resp[] content;
 
-    public RedisData(String commandType, Resp[] content) {
+    public RedisReq(String commandType, Resp[] content) {
         this.commandName = commandType;
         this.content = content;
     }
