@@ -1,6 +1,6 @@
-package com.redis.core.data;
+package com.redis.core.command.data;
 
-import com.redis.core.RedisDataDict;
+import com.redis.core.command.RedisDataDict;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

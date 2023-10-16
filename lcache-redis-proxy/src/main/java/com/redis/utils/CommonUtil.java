@@ -1,6 +1,6 @@
 package com.redis.utils;
 
-import com.redis.core.data.RedisHash;
+import com.redis.core.command.data.RedisHash;
 
 import java.util.Map;
 
