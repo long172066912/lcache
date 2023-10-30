@@ -1,10 +1,10 @@
 package com.redis.handler.codec;
 
-import com.redis.core.Resp;
-import com.redis.core.resp.BulkString;
-import com.redis.core.resp.Errors;
-import com.redis.core.resp.RespArray;
-import com.redis.core.resp.SimpleString;
+import com.redis.resp.Resp;
+import com.redis.resp.impl.BulkString;
+import com.redis.resp.impl.Errors;
+import com.redis.resp.impl.RespArray;
+import com.redis.resp.impl.SimpleString;
 import com.redis.handler.RedisReq;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

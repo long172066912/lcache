@@ -1,6 +1,6 @@
-package com.redis.core.resp;
+package com.redis.resp.impl;
 
-import com.redis.core.Resp;
+import com.redis.resp.Resp;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

@@ -1,6 +1,6 @@
 package com.redis.handler;
 
-import com.redis.core.Resp;
+import com.redis.resp.Resp;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package com.redis.core;
+package com.redis.resp;
 
 public enum RespType {
     /**

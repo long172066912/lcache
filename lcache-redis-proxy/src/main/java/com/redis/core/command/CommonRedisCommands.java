@@ -1,7 +1,7 @@
 package com.redis.core.command;
 
 import com.redis.core.Command;
-import com.redis.core.Resp;
+import com.redis.resp.Resp;
 
 public interface CommonRedisCommands extends Command {
     Resp command();

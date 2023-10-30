@@ -1,6 +1,6 @@
-package com.redis.core;
+package com.redis.resp;
 
-import com.redis.core.resp.*;
+import com.redis.resp.impl.*;
 import io.netty.buffer.ByteBuf;
 
 public interface Resp {
