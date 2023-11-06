@@ -1,21 +1,51 @@
 package com.redis.core.command;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.redis.core.command.model.RedisDataType;
+
 public abstract class RedisDataDict {
 
     private long startTime;
 
     private int expireTime;
 
-    protected RedisDataDict(long startTime) {
+    private RedisDataType redisDataType;
+
+    protected RedisDataDict(RedisDataType redisDataType, long startTime) {
+        this.redisDataType = redisDataType;
         this.startTime = startTime;
         this.expireTime = -1;
     }
 
-    public void setExpireTime(int expireTime) {
+    public void expire(int expireTime) {
         if (expireTime > 0) {
             startTime = System.currentTimeMillis();
             this.expireTime = expireTime;
         }
+    }
+
+    public void setExpireTime(int expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getExpireTime() {
+        return expireTime;
+    }
+
+    public RedisDataType getRedisDataType() {
+        return redisDataType;
+    }
+
+    public void setRedisDataType(RedisDataType redisDataType) {
+        this.redisDataType = redisDataType;
     }
 
     /**
@@ -23,6 +53,7 @@ public abstract class RedisDataDict {
      *
      * @return
      */
+    @JsonIgnore
     public boolean isExpire() {
         if (-1 == expireTime) {
             return false;

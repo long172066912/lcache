@@ -11,20 +11,32 @@ public class RedisDataDictFactory {
 
     public static <T extends RedisDataDict> T get(String k) {
         final RedisDataDict data = map.get(k);
-        if (null == data || data.isExpire()) {
+        if (null == data) {
+            return null;
+        }
+        if (data.isExpire()) {
+            RedisDataRdb.del(k);
             return null;
         }
         return (T) data;
     }
 
     public static void put(String k, RedisDataDict data) {
-        map.put(k, data);
+        if (null != data) {
+            map.put(k, data);
+            RedisDataRdb.put(k, data);
+        }
+    }
+
+    public static void del(String k) {
+        map.remove(k);
+        RedisDataRdb.del(k);
     }
 
     public static void expire(String k, int expireTime) {
         RedisDataDict data = map.get(k);
         if (null != data) {
-            data.setExpireTime(expireTime);
+            data.expire(expireTime);
         }
     }
 }

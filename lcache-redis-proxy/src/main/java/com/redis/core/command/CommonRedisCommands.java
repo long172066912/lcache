@@ -7,4 +7,5 @@ public interface CommonRedisCommands extends Command {
     Resp command();
     Resp hello();
     Resp expire(String k, Integer expireTime);
+    Resp del(String k);
 }

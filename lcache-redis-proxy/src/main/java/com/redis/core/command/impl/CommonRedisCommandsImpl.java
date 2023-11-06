@@ -1,14 +1,16 @@
 package com.redis.core.command.impl;
 
-import com.redis.resp.Resp;
 import com.redis.core.command.CommonRedisCommands;
-import com.redis.core.command.RedisDataDict;
 import com.redis.core.command.data.RedisDataDictFactory;
+import com.redis.resp.Resp;
 import com.redis.resp.impl.RespArray;
 import com.redis.resp.impl.RespInt;
 import com.redis.resp.impl.SimpleString;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CommonRedisCommandsImpl implements CommonRedisCommands {
@@ -43,7 +45,13 @@ public class CommonRedisCommandsImpl implements CommonRedisCommands {
 
     @Override
     public Resp expire(String k, Integer expireTime) {
-        Optional.ofNullable(RedisDataDictFactory.get(k)).ifPresent(data -> ((RedisDataDict) data).setExpireTime(expireTime));
+        RedisDataDictFactory.expire(k, expireTime);
+        return SimpleString.OK;
+    }
+
+    @Override
+    public Resp del(String k) {
+        RedisDataDictFactory.del(k);
         return SimpleString.OK;
     }
 

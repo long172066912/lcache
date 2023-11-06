@@ -5,4 +5,6 @@ plugins {
 // 定义自己的依赖
 dependencies {
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.68.Final'
+    implementation group: 'cn.hutool', name: 'hutool-core', version: '5.8.22'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
 }
